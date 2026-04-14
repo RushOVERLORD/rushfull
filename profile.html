@@ -3,43 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Профиль | RushFull</title>
+    <title>Профиль | Rushikaze</title>
     <style>
+        /* 1. Добавляем настройки неона */
+        :root {
+            --neon-color: #ff4500; 
+            --neon-glow: 0 0 10px var(--neon-color), 0 0 20px var(--neon-color);
+            --anim-speed: 3s; 
+        }
+
         body { background-color: #1a1a1a; color: #eee; font-family: sans-serif; padding: 20px; }
-        .profile-container { max-width: 600px; margin: 0 auto; background: #252525; padding: 30px; border-radius: 8px; border-top: 4px solid #ff4500; text-align: center; }
-        .full-avatar { width: 150px; height: 150px; border-radius: 12px; object-fit: cover; border: 3px solid #ff4500; margin-bottom: 20px; }
-        h1 { color: #ff4500; margin-bottom: 10px; }
-        .back-link { color: #888; text-decoration: none; font-size: 14px; }
+
+        /* 2. Добавляем саму анимацию перелива */
+        @keyframes neon-pulse {
+            0%, 100% {
+                box-shadow: 0 0 2px var(--neon-color), 0 0 5px var(--neon-color);
+                text-shadow: 0 0 2px var(--neon-color), 0 0 5px var(--neon-color);
+            }
+            50% {
+                box-shadow: 0 0 10px var(--neon-color), 0 0 15px var(--neon-color);
+                text-shadow: 0 0 8px var(--neon-color), 0 0 12px var(--neon-color);
+            }
+        }
+
+        .profile-container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background: #252525; 
+            padding: 30px; 
+            border-radius: 12px; 
+            border: 2px solid var(--neon-color); /* Рамка теперь пульсирует */
+            animation: neon-pulse var(--anim-speed) infinite ease-in-out;
+            text-align: center; 
+        }
+
+        .full-avatar { 
+            width: 150px; 
+            height: 150px; 
+            border-radius: 12px; 
+            object-fit: cover; 
+            border: 3px solid var(--neon-color); 
+            animation: neon-pulse var(--anim-speed) infinite ease-in-out;
+            margin-bottom: 20px; 
+        }
+
+        /* 3. Тот самый НИК БЕЗ РАМОК И ЛИНИЙ */
+        h1 { 
+            color: var(--neon-color); 
+            margin: 0 auto 25px;
+            padding: 0;
+            border: none;
+            border-bottom: none;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: var(--neon-glow);
+            animation: neon-pulse var(--anim-speed) infinite ease-in-out;
+        }
+
+        .back-link { color: #888; text-decoration: none; font-size: 14px; margin-top: 20px; display: inline-block; }
+        .back-link:hover { color: var(--neon-color); }
+
+        button {
+            background: none; 
+            border: 2px solid var(--neon-color); 
+            color: var(--neon-color); 
+            padding: 8px 20px; 
+            border-radius: 20px; 
+            cursor: pointer; 
+            margin-bottom: 20px;
+            font-weight: bold;
+            animation: neon-pulse var(--anim-speed) infinite ease-in-out;
+        }
     </style>
 </head>
 <body>
     <div class="profile-container">
-        <!-- Добавили id="user-avatar" -->
         <img src="" alt="Avatar" class="full-avatar" id="user-avatar">
         
         <h1 id="user-name">Загрузка...</h1>
         
-        <button onclick="logout()" style="background: none; border: 1px solid #ff4500; color: #ff4500; padding: 8px 20px; border-radius: 20px; cursor: pointer; margin-bottom: 20px;">
-            Выйти
-        </button>
+        <button onclick="logout()">Выйти</button>
         <br>
         <a href="index.html" class="back-link">← На главную</a>
     </div>
 
 <script>
-    // Достаем данные из памяти
     const savedName = localStorage.getItem('userName');
     const savedEmail = localStorage.getItem('userEmail');
     const savedAvatar = localStorage.getItem('userAvatar');
     
-    // 1. Ставим имя
     document.getElementById('user-name').innerText = savedName || savedEmail || 'Гость';
-    
-    // 2. Ставим аватарку (если нет — ставим заглушку)
     document.getElementById('user-avatar').src = savedAvatar || 'https://placeholder.com';
 
     function logout() {
-        localStorage.clear(); // Удаляет всё сразу
+        localStorage.clear();
         window.location.href = "index.html";
     }
 </script>
