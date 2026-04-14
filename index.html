@@ -20,24 +20,35 @@
         }
 
         /* Постоянная анимация пульсации */
-        @keyframes neon-pulse {
-            0%, 100% {
-                box-shadow: 0 0 5px var(--neon-color), 0 0 10px var(--neon-color);
-                text-shadow: 0 0 5px var(--neon-color), 0 0 10px var(--neon-color);
-                border-color: var(--neon-color);
-            }
-            50% {
-                box-shadow: 0 0 20px var(--neon-color), 0 0 35px var(--neon-color);
-                text-shadow: 0 0 15px var(--neon-color), 0 0 25px var(--neon-color);
-                border-color: #ff6a00; /* Чуть светлее в пике */
-            }
-        }
+        /* Более плавная и слабая пульсация */
+	@keyframes neon-pulse {
+    0%, 100% {
+        /* Минимальное свечение */
+        box-shadow: 0 0 2px var(--neon-color), 0 0 5px var(--neon-color);
+        text-shadow: 0 0 2px var(--neon-color), 0 0 5px var(--neon-color);
+        border-color: var(--neon-color);
+    }
+    50% {
+        /* Умеренное свечение (было 20px и 35px, стало 10px и 15px) */
+        box-shadow: 0 0 10px var(--neon-color), 0 0 15px var(--neon-color);
+        text-shadow: 0 0 8px var(--neon-color), 0 0 12px var(--neon-color);
+        border-color: var(--neon-color);
+    }
+}
 
-        h1 { 
-            text-align: center; 
-            color: var(--neon-color); 
-            animation: neon-pulse var(--anim-speed) infinite ease-in-out;
-        }
+	h1 {
+    display: table; /* Позволяет центрировать элемент и подгоняет ширину под текст */
+    margin: 20px auto; /* Центрирует заголовок по горизонтали */
+    padding-bottom: 10px;
+    color: var(--neon-color);
+    text-transform: uppercase; /* Делает все буквы заглавными (стиль киберпанк) */
+    letter-spacing: 3px; /* Добавляет немного воздуха между буквами */
+    border: none; /* Убеждаемся, что старой рамки нет */
+    border-bottom: 4px solid var(--neon-color); /* Та самая неоновая линия снизу */
+    text-shadow: var(--neon-glow);
+    animation: neon-pulse var(--anim-speed) infinite ease-in-out;
+}
+
 
         .anime-grid {
             display: grid;
