@@ -141,6 +141,18 @@
     <h1>Rushikaze</h1>
     <p style="text-align: center; color: #888;">Добропожаловать в международную энцоклопедию, где вы найдёте свежий ветер знаний по аниме/манге/ранобэ и  стремительный поток информации.</p>
     <div class="auth-container" id="auth-form">
+    <h3 style="color: var(--neon-color);">Регистрация</h3>
+    <!-- НОВОЕ ПОЛЕ -->
+    <input type="text" id="username" placeholder="Ваше имя/Никнейм"> 
+    <input type="email" id="email" placeholder="Электронная почта">
+    <input type="password" id="pass" placeholder="Пароль">
+    <br>
+    <!-- ИЗМЕНЕННАЯ ФУНКЦИЯ (добавили передачу имени) -->
+    <button class="auth-btn" onclick="signUp(document.getElementById('email').value, document.getElementById('pass').value, document.getElementById('username').value)">
+        Создать аккаунт
+    </button>
+</div>
+
         <h3 style="color: var(--neon-color);">Вход в систему</h3>
         <input type="email" id="email" placeholder="Электронная почта">
         <input type="password" id="pass" placeholder="Пароль">
