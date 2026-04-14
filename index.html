@@ -96,14 +96,59 @@
                 margin: 10px auto;
             }
         }
+	/*стиль дизайна формы регистрации*/
+        .auth-container {
+            background-color: #252525;
+            max-width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--neon-color);
+            box-shadow: var(--neon-glow);
+            text-align: center;
+        }
+        .auth-container input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            background: #1a1a1a;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 4px;
+        }
+        .auth-btn {
+            background-color: transparent;
+            color: var(--neon-color);
+            padding: 10px 20px;
+            border: 1px solid var(--neon-color);
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .auth-btn:hover {
+            background-color: var(--neon-color);
+            color: white;
+            box-shadow: var(--neon-glow);
+        }
+
     </style>
 </head>
 <body>
 
     <a href="profile.html" class="profile-link">Мой профиль</a>
     
-    <h1>RushFull</h1>
-    <p style="text-align: center; color: #888;">Международная энциклопедия по аниме</p>
+    <h1>Rushikaze</h1>
+    <p style="text-align: center; color: #888;">Добропожаловать в международную инцоклопедию, где вы найдёте свежий ветер знаний по аниме/манге/ранобэ, стремительный поток информации.</p>
+    <div class="auth-container" id="auth-form">
+        <h3 style="color: var(--neon-color);">Вход в систему</h3>
+        <input type="email" id="email" placeholder="Электронная почта">
+        <input type="password" id="pass" placeholder="Пароль">
+        <br>
+        <button class="auth-btn" onclick="signUp(document.getElementById('email').value, document.getElementById('pass').value)">
+            Создать аккаунт
+        </button>
+    </div>
 
     <div class="anime-grid">
 	<!--карточка 1-->        
@@ -128,6 +173,7 @@
         </div>
 
      </div>
+    <script type="module" src="auth.js"></script>
 
 </body>
 </html>
