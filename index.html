@@ -139,7 +139,7 @@
     <a href="profile.html" class="profile-link" id="profile-btn" style="display: none;">Мой профиль</a>
     
     <h1>Rushikaze</h1>
-    <p style="text-align: center; color: #888;">Добропожаловать в международную энцоклопедию, где вы найдёте свежий ветер знаний по аниме/манге/ранобэ и  стремительный поток информации.</p>
+    <p style="text-align: center; color: #888;">Добропожаловать в международную энциклопедию, где вы найдёте свежий ветер знаний по аниме/манге/ранобэ и  стремительный поток информации.</p>
     <div class="auth-container" id="auth-form">
     <h3 style="color: var(--neon-color);">Регистрация</h3>
     <!-- НОВОЕ ПОЛЕ -->
@@ -152,16 +152,16 @@
         Создать аккаунт
     </button>
 </div>
-
-        <h3 style="color: var(--neon-color);">Вход в систему</h3>
+    <div class="auth-container" id="auth-form">
+        <h3 style="color: var(--neon-color);">Регистрация</h3>
+        <input type="text" id="username" placeholder="Ваше имя/Никнейм"> 
         <input type="email" id="email" placeholder="Электронная почта">
         <input type="password" id="pass" placeholder="Пароль">
         <br>
-        <button class="auth-btn" onclick="signUp(document.getElementById('email').value, document.getElementById('pass').value)">
+        <button class="auth-btn" onclick="signUp(document.getElementById('email').value, document.getElementById('pass').value, document.getElementById('username').value)">
             Создать аккаунт
         </button>
     </div>
-
     <div class="anime-grid">
 	<!--карточка 1-->        
         <div class="anime-card">
@@ -187,31 +187,25 @@
      </div>
     <script type="module" src="auth.js"></script>
 <script>
-    function signUp(email, pass) {
-        if (email.trim() === "" || pass.trim() === "") {
-            alert("Введите почту и пароль!");
+    function signUp(email, pass, name) {
+        if (!email || !pass || !name) {
+            alert("Пожалуйста, заполните все поля!");
             return;
         }
-
-        // Показываем кнопку профиля
-        const profileBtn = document.getElementById('profile-btn');
-        if (profileBtn) {
-            profileBtn.style.display = 'block';
-        }
-
-        // Скрываем форму регистрации
-        const authForm = document.getElementById('auth-form');
-        if (authForm) {
-            authForm.style.display = 'none';
-        }
-
-        // Сохраняем почту для страницы профиля
         localStorage.setItem('userEmail', email);
-
-        alert("Регистрация успешна! Теперь кнопка профиля доступна.");
+        localStorage.setItem('userName', name);
+        document.getElementById('profile-btn').style.display = 'block';
+        document.getElementById('auth-form').style.display = 'none';
+        alert("Привет, " + name + "! Регистрация прошла успешно.");
     }
-</script>
 
+    window.onload = function() {
+        if (localStorage.getItem('userEmail')) {
+            document.getElementById('profile-btn').style.display = 'block';
+            document.getElementById('auth-form').style.display = 'none';
+        }
+    };
+</script>
 </body>
 </html>
 
