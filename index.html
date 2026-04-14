@@ -153,15 +153,21 @@
     </button>
 </div>
     <div class="auth-container" id="auth-form">
-        <h3 style="color: var(--neon-color);">Регистрация</h3>
-        <input type="text" id="username" placeholder="Ваше имя/Никнейм"> 
-        <input type="email" id="email" placeholder="Электронная почта">
-        <input type="password" id="pass" placeholder="Пароль">
-        <br>
-        <button class="auth-btn" onclick="signUp(document.getElementById('email').value, document.getElementById('pass').value, document.getElementById('username').value)">
-            Создать аккаунт
-        </button>
-    </div>
+    <h3 style="color: var(--neon-color);">Регистрация</h3>
+    <input type="text" id="username" placeholder="Ваше имя/Никнейм"> 
+    <input type="text" id="avatar-url" placeholder="Ссылка на фото (URL)"> 
+    <input type="email" id="email" placeholder="Электронная почта">
+    <input type="password" id="pass" placeholder="Пароль">
+    <br>
+    <button class="auth-btn" onclick="signUp(
+        document.getElementById('email').value, 
+        document.getElementById('pass').value, 
+        document.getElementById('username').value,
+        document.getElementById('avatar-url').value
+    )">
+        Создать аккаунт
+    </button>
+</div>
     <div class="anime-grid">
 	<!--карточка 1-->        
         <div class="anime-card">
@@ -187,24 +193,20 @@
      </div>
     <script type="module" src="auth.js"></script>
 <script>
-    function signUp(email, pass, name) {
+    function signUp(email, pass, name, avatar) {
         if (!email || !pass || !name) {
-            alert("Пожалуйста, заполните все поля!");
+            alert("Заполните имя, почту и пароль!");
             return;
         }
         localStorage.setItem('userEmail', email);
         localStorage.setItem('userName', name);
+        // Сохраняем ссылку на фото. Если пусто — ставим стандартную заглушку
+        localStorage.setItem('userAvatar', avatar || 'https://placeholder.com');
+
         document.getElementById('profile-btn').style.display = 'block';
         document.getElementById('auth-form').style.display = 'none';
-        alert("Привет, " + name + "! Регистрация прошла успешно.");
+        alert("Привет, " + name + "! Регистрация завершена.");
     }
-
-    window.onload = function() {
-        if (localStorage.getItem('userEmail')) {
-            document.getElementById('profile-btn').style.display = 'block';
-            document.getElementById('auth-form').style.display = 'none';
-        }
-    };
 </script>
 </body>
 </html>

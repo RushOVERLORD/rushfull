@@ -3,57 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Профиль пользователя | RushFull</title>
+    <title>Профиль | RushFull</title>
     <style>
         body { background-color: #1a1a1a; color: #eee; font-family: sans-serif; padding: 20px; }
         .profile-container { max-width: 600px; margin: 0 auto; background: #252525; padding: 30px; border-radius: 8px; border-top: 4px solid #ff4500; text-align: center; }
         .full-avatar { width: 150px; height: 150px; border-radius: 12px; object-fit: cover; border: 3px solid #ff4500; margin-bottom: 20px; }
         h1 { color: #ff4500; margin-bottom: 10px; }
-        .bio { color: #888; line-height: 1.6; margin-bottom: 25px; }
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
-        .stat-box { background: #1a1a1a; padding: 15px; border-radius: 6px; }
-        .stat-box b { color: #ff4500; display: block; font-size: 20px; }
         .back-link { color: #888; text-decoration: none; font-size: 14px; }
-        .back-link:hover { color: #ff4500; }
     </style>
 </head>
 <body>
     <div class="profile-container">
-        <img src="https://w0.peakpx.com/wallpaper/403/1018/HD-wallpaper-lappland-anime-arknights-dragon-eagle-eagles-edge-galaxy-gold-grim-love.jpg" alt="Avatar" class="full-avatar">
+        <!-- Добавили id="user-avatar" -->
+        <img src="" alt="Avatar" class="full-avatar" id="user-avatar">
         
-        <!-- Сюда подставится имя -->
         <h1 id="user-name">Загрузка...</h1>
         
-        <p class="bio">Обозреватель аниме, создатель RushFull. Любимый жанр: Сэйнэн. Смотрю аниме с 2015 года.</p>
-        
-        <div class="stats-grid">
-            <div class="stat-box"><b>124</b> Просмотрено</div>
-            <div class="stat-box"><b>12</b> В процессе</div>
-        </div>
-
-        <button onclick="logout()" style="background: none; border: 1px solid #ff4500; color: #ff4500; padding: 8px 20px; border-radius: 20px; cursor: pointer; margin-bottom: 20px; font-weight: bold;">
-            Выйти из аккаунта
+        <button onclick="logout()" style="background: none; border: 1px solid #ff4500; color: #ff4500; padding: 8px 20px; border-radius: 20px; cursor: pointer; margin-bottom: 20px;">
+            Выйти
         </button>
         <br>
-        <a href="index.html" class="back-link">← Вернуться на главную</a>
+        <a href="index.html" class="back-link">← На главную</a>
     </div>
 
 <script>
-    // 1. Сразу при загрузке берем ИМЯ или ПОЧТУ из памяти
+    // Достаем данные из памяти
     const savedName = localStorage.getItem('userName');
     const savedEmail = localStorage.getItem('userEmail');
+    const savedAvatar = localStorage.getItem('userAvatar');
     
-    // 2. Выводим имя (если есть), иначе почту, иначе "Гость"
+    // 1. Ставим имя
     document.getElementById('user-name').innerText = savedName || savedEmail || 'Гость';
+    
+    // 2. Ставим аватарку (если нет — ставим заглушку)
+    document.getElementById('user-avatar').src = savedAvatar || 'https://placeholder.com';
 
-    // 3. Функция выхода (чистит ВСЁ)
     function logout() {
-        localStorage.removeItem('userEmail');
-        localStorage.removeItem('userName');
+        localStorage.clear(); // Удаляет всё сразу
         window.location.href = "index.html";
     }
 </script>
-
 </body>
 </html>
 
