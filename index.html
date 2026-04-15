@@ -130,14 +130,24 @@
     <p style="text-align: center; color: #888;">Добро пожаловать в международную энциклопедию аниме!</p>
 
     <div class="auth-container" id="auth-form">
-        <h3 style="color: var(--neon-color);">Регистрация</h3>
-        <input type="text" id="username" placeholder="Ваше имя/Никнейм"> 
-        <input type="text" id="avatar-url" placeholder="Ссылка на фото (URL)"> 
-        <input type="email" id="email" placeholder="Электронная почта">
-        <input type="password" id="pass" placeholder="Пароль">
-        <br>
-        <button class="auth-btn" onclick="signUp()">Создать аккаунт</button>
-    </div>
+    <h3 id="form-title" style="color: var(--neon-color);">Регистрация</h3>
+    
+    <!-- Поле ника скрываем при входе -->
+    <input type="text" id="username" placeholder="Ваше имя/Никнейм"> 
+    <input type="text" id="avatar-url" placeholder="Ссылка на фото (URL)"> 
+    
+    <input type="email" id="email" placeholder="Электронная почта">
+    <input type="password" id="pass" placeholder="Пароль">
+    <br>
+    
+    <button class="auth-btn" id="main-auth-btn" onclick="handleAuth()">Создать аккаунт</button>
+    
+    <p style="font-size: 12px; margin-top: 15px; cursor: pointer; text-decoration: underline;" 
+       onclick="toggleAuthMode()" id="toggle-link">
+       Уже есть аккаунт? Войти
+    </p>
+</div>
+
 
     <!-- 1. ПУСТОЙ КОНТЕЙНЕР ДЛЯ КАРТОЧЕК -->
     <div class="anime-grid" id="anime-container"></div>
