@@ -152,98 +152,55 @@
     <!-- 1. ПУСТОЙ КОНТЕЙНЕР ДЛЯ КАРТОЧЕК -->
     <div class="anime-grid" id="anime-container"></div>
 
-<script>
-    // 1. ДАННЫЕ АНИМЕ
-    const animeData = [
-        { title: "Fate/Strange Fake", img: "fate.jpg", link: "fate_strange_fake.html" },
-        { title: "Oshi no Ko 3rd Season", img: "oshi.jpg", link: "oshi_no_Ko_3rd_season.html" },
-        { title: "Sousou no Frieren 2nd", img: "frieren.jpg", link: "sousoufno_frieren_2nd_season.html" },
-        { title: "Shingeki no Kyojin", img: "titan.jpg", link: "shingeki_no_kyojin.html" }
-    ];
+<!-- Подключаем Firebase модули через CDN -->
+<script type="module">
+  import { initializeApp } from "https://gstatic.com";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://gstatic.com";
 
-    // 2. ОТРИСОВКА КАРТОЧЕК
-    function renderCards() {
-        const container = document.getElementById('anime-container');
-        container.innerHTML = animeData.map(anime => `
-            <div class="anime-card">
-                <img src="${anime.img}" alt="${anime.title}">
-                <a href="${anime.link}">${anime.title}</a>
-            </div>
-        `).join('');
-    }
+  // 1. ВСТАВЬ СВОИ ДАННЫЕ СЮДА
+  const firebaseConfig = {
+    apiKey: "ТВОЙ_КЛЮЧ",
+    authDomain: "ТВОЙ_ДОМЕН",
+    projectId: "ТВОЙ_ID",
+    storageBucket: "...",
+    messagingSenderId: "...",
+    appId: "..."
+  };
 
-    // 3. ЛОГИКА ВХОДА И РЕГИСТРАЦИИ
-    let isLoginMode = false; 
+  // Инициализация
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-    function toggleAuthMode() {
-        isLoginMode = !isLoginMode;
-        const title = document.getElementById('form-title');
-        const btn = document.getElementById('main-auth-btn');
-        const link = document.getElementById('toggle-link');
-        const nameInput = document.getElementById('username');
-        const avatarInput = document.getElementById('avatar-url');
+  // 2. ФУНКЦИЯ ВХОДА И РЕГИСТРАЦИИ (для Firebase)
+  window.handleAuth = async () => {
+    const email = document.getElementById('email').value;
+    const pass = document.getElementById('pass').value;
+    const isLoginMode = document.getElementById('main-auth-btn').innerText === "Войти";
 
+    try {
         if (isLoginMode) {
-            title.innerText = "Вход";
-            btn.innerText = "Войти";
-            link.innerText = "Нет аккаунта? Регистрация";
-            nameInput.style.display = "none";
-            avatarInput.style.display = "none";
+            // ВХОД
+            await signInWithEmailAndPassword(auth, email, pass);
+            alert("С возвращением!");
         } else {
-            title.innerText = "Регистрация";
-            btn.innerText = "Создать аккаунт";
-            link.innerText = "Уже есть аккаунт? Войти";
-            nameInput.style.display = "block";
-            avatarInput.style.display = "block";
+            // РЕГИСТРАЦИЯ
+            await createUserWithEmailAndPassword(auth, email, pass);
+            alert("Пользователь создан в Firebase!");
         }
+        location.reload(); // Перезагружаем, чтобы сработал checkAuth
+    } catch (error) {
+        alert("Ошибка: " + error.message);
     }
+  };
 
-    function handleAuth() {
-        const email = document.getElementById('email').value;
-        const pass = document.getElementById('pass').value;
-
-        if (isLoginMode) {
-            // ЛОГИКА ВХОДА
-            const savedEmail = localStorage.getItem('userEmail');
-            const savedPass = localStorage.getItem('userPass');
-
-            if (email === savedEmail && pass === savedPass) {
-                alert("С возвращением, " + localStorage.getItem('userName') + "!");
-                checkAuth();
-            } else {
-                alert("Ошибка: Неверная почта или пароль!");
-            }
-        } else {
-            // ЛОГИКА РЕГИСТРАЦИИ
-            const name = document.getElementById('username').value;
-            const avatar = document.getElementById('avatar-url').value;
-
-            if (!email || !pass || !name) {
-                alert("Заполните имя, почту и пароль!");
-                return;
-            }
-            localStorage.setItem('userEmail', email);
-            localStorage.setItem('userPass', pass); // Сохраняем пароль для входа
-            localStorage.setItem('userName', name);
-            localStorage.setItem('userAvatar', avatar || 'https://placeholder.com');
-
-            alert("Регистрация завершена успешно!");
-            checkAuth();
-        }
+  // Проверка входа
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+        document.getElementById('profile-btn').style.display = 'block';
+        document.getElementById('auth-form').style.display = 'none';
+        console.log("Вошел пользователь:", user.email);
     }
-
-    function checkAuth() {
-        if (localStorage.getItem('userEmail')) {
-            document.getElementById('profile-btn').style.display = 'block';
-            document.getElementById('auth-form').style.display = 'none';
-        }
-    }
-
-    // ЗАПУСК ПРИ ЗАГРУЗКЕ
-    window.onload = function() {
-        renderCards();
-        checkAuth();
-    };
+  });
 </script>
 
 </body>
