@@ -154,10 +154,14 @@
 
 <!-- Подключаем Firebase модули через CDN -->
 <script type="module">
-  import { initializeApp } from "firebase/app";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/analytics";
+  import { initializeApp } from "https://gstatic.com";
+  import { 
+    getAuth, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    onAuthStateChanged 
+  } from "https://gstatic.com";
 
-  // 1. ВСТАВЬ СВОИ ДАННЫЕ СЮДА
   const firebaseConfig = {
     apiKey: "AIzaSyCf_jRAqo6l8ycv3YpHylDFdT03V9hgV8Q",
     authDomain: "rushikaze-r2o5.firebaseapp.com",
@@ -167,42 +171,59 @@
     appId: "1:674729217637:web:8a1553dd6f3ad352f3008c"
   };
 
-  // Инициализация
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  // 2. ФУНКЦИЯ ВХОДА И РЕГИСТРАЦИИ (для Firebase)
+  // Переключение режима (Вход / Регистрация)
+  window.toggleAuthMode = () => {
+    const title = document.getElementById('form-title');
+    const btn = document.getElementById('main-auth-btn');
+    const link = document.getElementById('toggle-link');
+    const nameInput = document.getElementById('username');
+    const avatarInput = document.getElementById('avatar-url');
+
+    if (btn.innerText === "Создать аккаунт") {
+      title.innerText = "Вход";
+      btn.innerText = "Войти";
+      link.innerText = "Нет аккаунта? Регистрация";
+      nameInput.style.display = "none";
+      avatarInput.style.display = "none";
+    } else {
+      title.innerText = "Регистрация";
+      btn.innerText = "Создать аккаунт";
+      link.innerText = "Уже есть аккаунт? Войти";
+      nameInput.style.display = "block";
+      avatarInput.style.display = "block";
+    }
+  };
+
+  // Логика авторизации
   window.handleAuth = async () => {
     const email = document.getElementById('email').value;
     const pass = document.getElementById('pass').value;
     const isLoginMode = document.getElementById('main-auth-btn').innerText === "Войти";
 
     try {
-        if (isLoginMode) {
-            // ВХОД
-            await signInWithEmailAndPassword(auth, email, pass);
-            alert("С возвращением!");
-        } else {
-            // РЕГИСТРАЦИЯ
-            await createUserWithEmailAndPassword(auth, email, pass);
-            alert("Пользователь создан в Firebase!");
-        }
-        location.reload(); // Перезагружаем, чтобы сработал checkAuth
+      if (isLoginMode) {
+        await signInWithEmailAndPassword(auth, email, pass);
+        alert("С возвращением!");
+      } else {
+        await createUserWithEmailAndPassword(auth, email, pass);
+        alert("Аккаунт создан!");
+      }
     } catch (error) {
-        alert("Ошибка: " + error.message);
+      alert("Ошибка: " + error.message);
     }
   };
 
-  // Проверка входа
-  auth.onAuthStateChanged((user) => {
+  // Следим за состоянием пользователя
+  onAuthStateChanged(auth, (user) => {
     if (user) {
-        document.getElementById('profile-btn').style.display = 'block';
-        document.getElementById('auth-form').style.display = 'none';
-        console.log("Вошел пользователь:", user.email);
+      document.getElementById('profile-btn').style.display = 'block';
+      document.getElementById('auth-form').style.display = 'none';
     }
   });
 </script>
-
 </body>
 </html>
 
