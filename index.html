@@ -154,8 +154,8 @@
 
 <!-- Подключаем Firebase модули через CDN -->
 <script type="module">
-  import { initializeApp } from "https://gstatic.com";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://gstatic.com";
+  import { initializeApp } from "firebase/app";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/analytics";
 
   // 1. ВСТАВЬ СВОИ ДАННЫЕ СЮДА
   const firebaseConfig = {
