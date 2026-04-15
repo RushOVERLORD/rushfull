@@ -153,16 +153,15 @@
     <div class="anime-grid" id="anime-container"></div>
 
 <script>
-    // 2. ДАННЫЕ (список аниме)
+    // 1. ДАННЫЕ АНИМЕ
     const animeData = [
         { title: "Fate/Strange Fake", img: "fate.jpg", link: "fate_strange_fake.html" },
         { title: "Oshi no Ko 3rd Season", img: "oshi.jpg", link: "oshi_no_Ko_3rd_season.html" },
         { title: "Sousou no Frieren 2nd", img: "frieren.jpg", link: "sousoufno_frieren_2nd_season.html" },
-        { title: "Shingeki no Kyojin", img: "titan.jpg", link: "shingeki_no_kyojin.html" },
-        // Сюда можно легко дописывать новые аниме
+        { title: "Shingeki no Kyojin", img: "titan.jpg", link: "shingeki_no_kyojin.html" }
     ];
 
-    // 3. ФУНКЦИЯ ОТРИСОВКИ
+    // 2. ОТРИСОВКА КАРТОЧЕК
     function renderCards() {
         const container = document.getElementById('anime-container');
         container.innerHTML = animeData.map(anime => `
@@ -173,23 +172,64 @@
         `).join('');
     }
 
-    // 4. ЛОГИКА РЕГИСТРАЦИИ
-    function signUp() {
+    // 3. ЛОГИКА ВХОДА И РЕГИСТРАЦИИ
+    let isLoginMode = false; 
+
+    function toggleAuthMode() {
+        isLoginMode = !isLoginMode;
+        const title = document.getElementById('form-title');
+        const btn = document.getElementById('main-auth-btn');
+        const link = document.getElementById('toggle-link');
+        const nameInput = document.getElementById('username');
+        const avatarInput = document.getElementById('avatar-url');
+
+        if (isLoginMode) {
+            title.innerText = "Вход";
+            btn.innerText = "Войти";
+            link.innerText = "Нет аккаунта? Регистрация";
+            nameInput.style.display = "none";
+            avatarInput.style.display = "none";
+        } else {
+            title.innerText = "Регистрация";
+            btn.innerText = "Создать аккаунт";
+            link.innerText = "Уже есть аккаунт? Войти";
+            nameInput.style.display = "block";
+            avatarInput.style.display = "block";
+        }
+    }
+
+    function handleAuth() {
         const email = document.getElementById('email').value;
         const pass = document.getElementById('pass').value;
-        const name = document.getElementById('username').value;
-        const avatar = document.getElementById('avatar-url').value;
 
-        if (!email || !pass || !name) {
-            alert("Заполните имя, почту и пароль!");
-            return;
+        if (isLoginMode) {
+            // ЛОГИКА ВХОДА
+            const savedEmail = localStorage.getItem('userEmail');
+            const savedPass = localStorage.getItem('userPass');
+
+            if (email === savedEmail && pass === savedPass) {
+                alert("С возвращением, " + localStorage.getItem('userName') + "!");
+                checkAuth();
+            } else {
+                alert("Ошибка: Неверная почта или пароль!");
+            }
+        } else {
+            // ЛОГИКА РЕГИСТРАЦИИ
+            const name = document.getElementById('username').value;
+            const avatar = document.getElementById('avatar-url').value;
+
+            if (!email || !pass || !name) {
+                alert("Заполните имя, почту и пароль!");
+                return;
+            }
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userPass', pass); // Сохраняем пароль для входа
+            localStorage.setItem('userName', name);
+            localStorage.setItem('userAvatar', avatar || 'https://placeholder.com');
+
+            alert("Регистрация завершена успешно!");
+            checkAuth();
         }
-        localStorage.setItem('userEmail', email);
-        localStorage.setItem('userName', name);
-        localStorage.setItem('userAvatar', avatar || 'https://placeholder.com');
-
-        checkAuth();
-        alert("Привет, " + name + "! Регистрация завершена.");
     }
 
     function checkAuth() {
@@ -199,10 +239,10 @@
         }
     }
 
-    // ЗАПУСК ВСЕГО ПРИ ЗАГРУЗКЕ
+    // ЗАПУСК ПРИ ЗАГРУЗКЕ
     window.onload = function() {
-        renderCards(); // Рисуем карточки
-        checkAuth();   // Проверяем вход
+        renderCards();
+        checkAuth();
     };
 </script>
 
