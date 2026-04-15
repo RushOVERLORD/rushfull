@@ -231,7 +231,35 @@
       console.log("Вошел:", user.email);
     }
   });
+// 1. Твоя энциклопедия (база данных)
+// Если захочешь добавить новое аниме — просто добавь строчку здесь
+const animeDatabase = [
+    { title: "Overlord Movie 1: Fushisha no Ou", img: "overlord.jpg", link: "overlord.html" },
+йй    { title: "Chainsaw Man", img: "chainsaw_man.jpg", link: "chainsaw_man.html" },
+];
+
+// 2. ЕДИНЫЙ ШАБЛОН ДИЗАЙНА
+// Если захочешь изменить вид ВСЕХ карточек (например, добавить рейтинг), 
+// тебе нужно будет изменить только этот кусочек кода
+function animeCardTemplate(anime) {
+    return `
+        <div class="anime-card">
+            <img src="${anime.img}" alt="${anime.title}">
+            <a href="${anime.link}">${anime.title}</a>
+        </div>
+    `;
+}
+
+// 3. Функция отрисовки
+function displayAnime() {
+    const container = document.getElementById('anime-container');
+    if (container) {
+        container.innerHTML = animeDatabase.map(anime => animeCardTemplate(anime)).join('');
+    }
+}
+
+// Запускаем!
+displayAnime();
 </script>
 </body>
 </html>
-
