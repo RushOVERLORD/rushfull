@@ -186,89 +186,120 @@
     </style>
 </head>
 <body>
-    <!-- Кнопка выбора языка: Сортировка по материкам -->
-    <!-- Исправленная кнопка выбора языка -->
-<div style="position: fixed; top: 10px; left: 10px; z-index: 9999; display: flex; align-items: center; background: rgba(0, 0, 0, 0.7); padding: 5px 10px; border-radius: 20px; border: 1px solid #ff4500; box-shadow: 0 0 10px rgba(255, 69, 0, 0.5);">
-    <span style="font-size: 16px; margin-right: 5px; line-height: 1;">🌐</span>
-    <select id="lang-switcher" style="
-        background: transparent; 
-        color: #fff; 
-        border: none; 
-        font-size: 13px;
-        cursor: pointer;
-        outline: none;
-        appearance: none; /* Убирает стандартную стрелку браузера */
-        -webkit-appearance: none;
-        padding-right: 5px;
-    ">
-        <option value="ru" style="background: #222;">Русский</option>
-        <option value="en" style="background: #222;">English</option>
-            
-            <option value="ru">Русский (Оригинал)</option>
+    <!-- Блок настроек с шестеренкой -->
+    <div style="position: fixed; top: 15px; left: 15px; z-index: 10000;">
+        <!-- Кнопка-шестеренка -->
+        <button class="settings-btn" onclick="toggleSettings()" style="
+            background: rgba(0, 0, 0, 0.8); 
+            border: 2px solid #ff4500; 
+            color: white; 
+            font-size: 20px; 
+            padding: 8px; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            box-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            outline: none;
+        ">⚙️</button>
+        
+        <!-- Выпадающее меню -->
+        <div id="settings-menu" style="
+            display: none; 
+            position: absolute; 
+            top: 50px; 
+            left: 0; 
+            background: #1a1a1a; 
+            border: 2px solid #ff4500; 
+            padding: 15px; 
+            border-radius: 10px; 
+            min-width: 200px; 
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        ">
+            <p style="margin: 0 0 10px 0; font-size: 12px; color: #ff4500; font-family: sans-serif; font-weight: bold;">ВЫБОР ЯЗЫКА:</p>
+            <select id="lang-switcher" style="
+                width: 100%; 
+                background: #222; 
+                color: #fff; 
+                border: 1px solid #444; 
+                padding: 8px; 
+                border-radius: 5px; 
+                outline: none;
+                cursor: pointer;
+            ">
+                <option value="ru">Русский (Оригинал)</option>
 
-            <optgroup label="Европа">
-                <option value="en">English (UK)</option>
-                <option value="de">Deutsch (Германия)</option>
-                <option value="fr">Français (Франция)</option>
-                <option value="it">Italiano (Италия)</option>
-                <option value="es">Español (Испания)</option>
-                <option value="pl">Polski (Польша)</option>
-                <option value="pt">Português (Португалия)</option>
-                <option value="uk">Українська (Украина)</option>
-                <option value="be">Беларуская (Беларусь)</option>
-                <option value="sr">Српски (Сербия)</option>
-                <option value="cs">Čeština (Чехия)</option>
-                <option value="hu">Magyar (Венгрия)</option>
-                <option value="sv">Svenska (Швеция)</option>
-                <option value="no">Norsk (Норвегия)</option>
-                <option value="fi">Suomi (Финляндия)</option>
-                <option value="el">Ελληνικά (Греция)</option>
-                <option value="bg">Български (Болгария)</option>
-                <option value="nl">Nederlands (Нидерланды)</option>
-            </optgroup>
+                <optgroup label="Европа">
+                    <option value="en">English (UK)</option>
+                    <option value="de">Deutsch</option>
+                    <option value="fr">Français</option>
+                    <option value="it">Italiano</option>
+                    <option value="es">Español</option>
+                    <option value="pl">Polski</option>
+                    <option value="uk">Українська</option>
+                    <option value="be">Беларуская</option>
+                    <option value="sr">Српски</option>
+                    <option value="sv">Svenska</option>
+                </optgroup>
 
-            <optgroup label="Азия">
-                <option value="zh-CN">中文 (Китай)</option>
-                <option value="ja">日本語 (Япония)</option>
-                <option value="ko">한국어 (Корея)</option>
-                <option value="kk">Қазақша (Казахстан)</option>
-                <option value="uz">O'zbekcha (Узбекистан)</option>
-                <option value="ky">Кыргызча (Киргизия)</option>
-                <option value="tg">Тоҷикӣ (Таджикистан)</option>
-                <option value="hy">Հայերեն (Армения)</option>
-                <option value="az">Azərbaycanca (Азербайджан)</option>
-                <option value="ka">ქართული (Грузия)</option>
-                <option value="hi">हिन्दी (Индия)</option>
-                <option value="th">ไทย (Таиланд)</option>
-                <option value="vi">Tiếng Việt (Вьетнам)</option>
-                <option value="tr">Türkçe (Турция)</option>
-                <option value="ar">العربية (Арабский мир)</option>
-                <option value="he">עברית (Израиль)</option>
-            </optgroup>
+                <optgroup label="Азия">
+                    <option value="zh-CN">中文 (Китай)</option>
+                    <option value="ja">日本語 (Япония)</option>
+                    <option value="ko">한국어 (Корея)</option>
+                    <option value="kk">Қазақша</option>
+                    <option value="uz">O'zbekcha</option>
+                    <option value="ky">Кыргызча</option>
+                    <option value="hy">Հայերեն</option>
+                    <option value="ka">ქართული</option>
+                    <option value="tr">Türkçe</option>
+                    <option value="ar">العربية</option>
+                </optgroup>
 
-            <optgroup label="Америка">
-                <option value="en">English (USA/Canada)</option>
-                <option value="es">Español (Мексика/Латин. Ам.)</option>
-                <option value="pt">Português (Бразилия)</option>
-                <option value="fr">Français (Канада)</option>
-            </optgroup>
-
-            <optgroup label="Африка и Океания">
-                <option value="en">English (Australia/NZ)</option>
-                <option value="sw">Kiswahili (Вост. Африка)</option>
-                <option value="af">Afrikaans (ЮАР)</option>
-                <option value="am">አማርኛ (Эфиопия)</option>
-            </optgroup>
-        </select>
+                <optgroup label="Америка и Океания">
+                    <option value="en">English (USA)</option>
+                    <option value="pt">Português (Brasil)</option>
+                    <option value="es">Español (Latinoam.)</option>
+                </optgroup>
+            </select>
+        </div>
     </div>
 
+    <script>
+    // Логика меню: Открыть / Закрыть
+    function toggleSettings() {
+        const menu = document.getElementById('settings-menu');
+        menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    }
+
+    // Закрытие при клике в любое другое место
+    document.addEventListener('click', function(event) {
+        const menu = document.getElementById('settings-menu');
+        const btn = document.querySelector('.settings-btn');
+        if (!btn.contains(event.target) && !menu.contains(event.target)) {
+            menu.style.display = 'none';
+        }
+    });
+
+    // Связка с Google Translate
+    document.getElementById('lang-switcher').addEventListener('change', function() {
+        const lang = this.value;
+        const googleSelect = document.querySelector('.goog-te-combo');
+        if (googleSelect) {
+            googleSelect.value = lang;
+            googleSelect.dispatchEvent(new Event('change'));
+        }
+    });
+    </script>
+   
     <!-- Далее ваш основной код без изменений -->
     <a href="profile.html" class="profile-link" id="profile-btn">
         <h1 data-key="title">Rushikadze</h1>
     </a>
 
-    <p style="text-align: center; color: #888;" data-key="welcome">Добро пожаловать в энциклопедию</p>
-
+    <p style="text-align: center; color: #888;" data-key="welcome">Добро пожаловать в международную энциклопедию по Аниме/Манге/Ранобэ</p>
     <div class="auth-container" id="auth-form">
         <h3 id="form-title" style="color: var(--neon-color);" data-key="reg_title">Регистрация</h3>
 
@@ -388,46 +419,35 @@
   document.getElementById('toggle-link')?.addEventListener('click', window.toggleAuthMode);
   document.getElementById('main-auth-btn')?.addEventListener('click', window.handleAuth);
 </script>
-<!-- 1. Контейнер для Google (скрытый) -->
 <div id="google_translate_element" style="display:none;"></div>
 
-<!-- 2. Логика управления переводом -->
 <script type="text/javascript">
     function googleTranslateElementInit() {
         new google.translate.TranslateElement({
-            pageLanguage: 'ru', 
+            pageLanguage: 'ru',
             autoDisplay: false
         }, 'google_translate_element');
     }
 
     function changeLanguage(lang) {
-        const select = document.querySelector('.goog-te-combo');
-        if (select) {
-            select.value = lang;
-            select.dispatchEvent(new Event('change'));
+        // Находим скрытый список Google
+        const googleSelect = document.querySelector('.goog-te-combo');
+        if (googleSelect) {
+            googleSelect.value = lang;
+            googleSelect.dispatchEvent(new Event('change')); // Имитируем выбор
+        } else {
+            // Если Google еще не загрузился, пробуем еще раз через полсекунды
+            setTimeout(() => changeLanguage(lang), 500);
         }
     }
 
-    // Ждем загрузки страницы и настраиваем кнопку
-    window.addEventListener('load', () => {
-        const switcher = document.getElementById('lang-switcher');
-        if (switcher) {
-            switcher.addEventListener('change', (e) => {
-                changeLanguage(e.target.value);
-            });
+    // Слушаем твой переключатель
+    document.addEventListener('change', (e) => {
+        if (e.target && e.target.id === 'lang-switcher') {
+            changeLanguage(e.target.value);
         }
-        
-        // Авто-определение языка устройства
-        const userLang = navigator.language.slice(0, 2);
-        setTimeout(() => {
-            changeLanguage(userLang);
-            if(switcher) switcher.value = userLang;
-        }, 1500); 
     });
 </script>
-
-<!-- 3. Подключение самого движка Google -->
 <script type="text/javascript" src="https://google.com"></script>
-
 </body>
 </html>
