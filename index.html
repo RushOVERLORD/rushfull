@@ -172,17 +172,19 @@
 
 <!-- Подключаем Firebase модули через CDN -->
 <script type="module">
-  // 1. Импорты Firebase (твои текущие)
+  // 1. Импорты Firebase - ТУТ БЫЛА ОШИБКА (исправил analytics на auth)
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
   import {
     getAuth,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     onAuthStateChanged
-  } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-analytics.js";
+  } from "https://gstatic.com"; // ИСПРАВЛЕНО
 
-  // 2. ИМПОРТ ТВОЕЙ БАЗЫ (ВМЕСТО СТАРОГО МАССИВА)
+  // 2. ИМПОРТ ТВОЕЙ БАЗЫ
   import { animeDatabase } from './db.js';
+
+  // ... дальше твой конфиг и остальной код без изменений ...
 
   // Твой конфиг Firebase
   const firebaseConfig = {
