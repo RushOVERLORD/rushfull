@@ -27,54 +27,59 @@
     </div>
 
     <script type="module">
-        // 1. Твоя база данных (добавляй сюда новые аниме)
-        const animeDatabase = [
-            { 
-                id: "chainsaw", 
-                title: "Человек-бензопила", 
-                img: "fate.jpg",
-                type: "TV Сериал",
-                genres: "Боевик, Ужасы, Сёнэн",
-                themes: "Демоны, Охотники",
-                japTitle: "Chainsaw Man (チェンソーマン)",
-                rating: "18+ (R)",
-                status: "Вышло"
-            },
-            { 
-                id: "overlord", 
-                title: "Повелитель", 
-                img: "overlord.jpg",
-                type: "Фильм",
-                genres: "Камедия, Фэнтези",
-                themes: "Игры, Исекай",
-                japTitle: "Overlord (オーバーロード)",
-                rating: "16+",
-                status: "Завершено"
-            }
-        ];
+  // --- 1. ЛОГИКА (ТЕПЕРЬ ВСЕГДА СВЕРХУ) ---
+  function displayAnimeData() {
+    const params = new URLSearchParams(window.location.search);
+    const animeId = params.get('id');
 
-        const params = new URLSearchParams(window.location.search);
-        const animeId = params.get('id');
-        const anime = animeDatabase.find(item => item.id === animeId);
+    // Ищем аниме в базе (она подгрузится, так как это функция)
+    const anime = animeDatabase.find(item => item.id === animeId);
 
-        if (anime) {
-            document.getElementById('page-title').innerText = anime.title + " | Rushikadze";
-            document.getElementById('anime-title').innerText = anime.title;
-            document.getElementById('anime-img').src = anime.img;
-            
-            // Вставляем параметры в твоем строгом порядке
-            document.getElementById('anime-info').innerHTML = `
-                <p><b>Тип:</b> ${anime.type}</p>
-                <p><b>Жанры:</b> ${anime.genres}</p>
-                <p><b>Тема:</b> ${anime.themes}</p>
-                <p><b>Японское название:</b> ${anime.japTitle}</p>
-                <p><b>Возрастной рейтинг:</b> ${anime.rating}</p>
-                <p><b>Статус:</b> ${anime.status}</p>
-            `;
-        } else {
-            document.body.innerHTML = "<h1>Аниме не найдено</h1><a href='index.html' class='back-link'>На главную</a>";
-        }
-    </script>
+    if (anime) {
+      document.getElementById('anime-title').innerText = anime.title;
+      document.getElementById('anime-img').src = anime.img;
+      document.getElementById('anime-info').innerHTML = `
+          <p><b>Тип:</b> ${anime.type}</p>
+          <p><b>Жанры:</b> ${anime.genres}</p>
+          <p><b>Тема:</b> ${anime.themes}</p>
+          <p><b>Японское название:</b> ${anime.japTitle}</p>
+          <p><b>Возрастной рейтинг:</b> ${anime.rating}</p>
+          <p><b>Статус:</b> ${anime.status}</p>
+      `;
+    }
+  }
+
+  // Запускаем отображение
+  displayAnimeData();
+
+  // --- 2. БАЗА ДАННЫХ (ТЕПЕРЬ ВСЕГДА ВНИЗУ) ---
+  // Можешь листать вниз и добавлять сотни аниме здесь
+  var animeDatabase = [
+    { 
+      id: "chainsaw_man", 
+      title: "Chainsaw Man", 
+      type: "TV",
+      genres: "Боевик",
+      themes: "Демоны",
+      japTitle: "Chainsaw Man",
+      rating: "18+",
+      status: "Вышло",
+      img: "chainsaw_man.jpg"
+    },
+    { 
+      id: "overlord", 
+      title: "Overlord",
+      type: "TV",
+      genres: "Боевик",
+      themes: "Демоны",
+      japTitle: "Chainsaw Man",
+      rating: "18+",
+      status: "Вышло",
+      img: "overlord.jpg"  
+    }
+  ];
+</script>
+
 </body>
 </html>
 
