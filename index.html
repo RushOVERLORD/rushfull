@@ -199,23 +199,31 @@
   const auth = getAuth(app);
 
   // --- ЛОГИКА ПЕРЕКЛЮЧЕНИЯ И АВТОРИЗАЦИИ (Твоя текущая) ---
-  window.toggleAuthMode = () => {
+    window.toggleAuthMode = () => {
     const btn = document.getElementById('main-auth-btn');
     const title = document.getElementById('form-title');
     const link = document.getElementById('toggle-link');
     const nameInput = document.getElementById('username');
     const avatarInput = document.getElementById('avatar-url');
 
-    if (btn.innerText === "Создать аккаунт") {
-      title.innerText = "Вход"; btn.innerText = "Войти";
+    // .trim() удаляет случайные пробелы по краям
+    const currentText = btn.innerText.trim();
+
+    if (currentText === "Создать аккаунт") {
+      title.innerText = "Вход"; 
+      btn.innerText = "Войти";
       link.innerText = "Нет аккаунта? Регистрация";
-      nameInput.style.display = "none"; avatarInput.style.display = "none";
+      if(nameInput) nameInput.style.display = "none"; 
+      if(avatarInput) avatarInput.style.display = "none";
     } else {
-      title.innerText = "Регистрация"; btn.innerText = "Создать аккаунт";
+      title.innerText = "Регистрация"; 
+      btn.innerText = "Создать аккаунт";
       link.innerText = "Уже есть аккаунт? Войти";
-      nameInput.style.display = "block"; avatarInput.style.display = "block";
+      if(nameInput) nameInput.style.display = "block"; 
+      if(avatarInput) avatarInput.style.display = "block";
     }
   };
+
 
   window.handleAuth = async () => {
     const email = document.getElementById('email').value;
