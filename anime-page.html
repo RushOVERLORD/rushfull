@@ -6,10 +6,10 @@
     <title id="page-title">Загрузка...</title>
     <style>
         :root { --neon: #ff4500; }
-        body { background: #1a1a1a; color: #eee; font-family: sans-serif; padding: 20px; line-height: 1.6; }
+        body { background: #1a1a1a; color: #eee; font-family: sans-serif; padding: 20px; }
         .back-link { color: var(--neon); text-decoration: none; font-weight: bold; }
         .container { display: flex; gap: 30px; flex-wrap: wrap; margin-top: 20px; }
-        .poster { width: 280px; border-radius: 10px; border: 2px solid var(--neon); box-shadow: 0 0 15px rgba(255,69,0,0.3); }
+        .poster { width: 280px; border-radius: 10px; border: 2px solid var(--neon); box-shadow: 0 0 10px rgba(255,69,0,0.2); }
         .info-list p { margin: 8px 0; border-bottom: 1px solid #333; padding-bottom: 5px; }
         .info-list b { color: var(--neon); min-width: 150px; display: inline-block; }
         h1 { text-shadow: 0 0 10px var(--neon); color: var(--neon); }
@@ -18,69 +18,71 @@
 <body>
     <a href="index.html" class="back-link">← На главную</a>
     <h1 id="anime-title">Загрузка...</h1>
-    
+
     <div class="container">
         <img id="anime-img" class="poster" src="" alt="Постер">
         <div id="anime-info" class="info-list">
-            <!-- Сюда JS подставит параметры по твоему списку -->
+            <!-- Сюда JS подставит параметры -->
         </div>
     </div>
 
     <script type="module">
-  // --- 1. ЛОГИКА (ТЕПЕРЬ ВСЕГДА СВЕРХУ) ---
-  function displayAnimeData() {
-    const params = new URLSearchParams(window.location.search);
-    const animeId = params.get('id');
+        // --- 1. ЛОГИКА (ВВЕРХУ) ---
+        function displayAnimeData() {
+            const params = new URLSearchParams(window.location.search);
+            const animeId = params.get('id');
 
-    // Ищем аниме в базе (она подгрузится, так как это функция)
-    const anime = animeDatabase.find(item => item.id === animeId);
+            // Ищем аниме в базе
+            const anime = animeDatabase.find(item => item.id === animeId);
 
-    if (anime) {
-      document.getElementById('anime-title').innerText = anime.title;
-      document.getElementById('anime-img').src = anime.img;
-      document.getElementById('anime-info').innerHTML = `
-          <p><b>Тип:</b> ${anime.type}</p>
-          <p><b>Жанры:</b> ${anime.genres}</p>
-          <p><b>Тема:</b> ${anime.themes}</p>
-          <p><b>Японское название:</b> ${anime.japTitle}</p>
-          <p><b>Возрастной рейтинг:</b> ${anime.rating}</p>
-          <p><b>Статус:</b> ${anime.status}</p>
-      `;
-    }
-  }
+            if (anime) {
+                document.getElementById('page-title').innerText = anime.title;
+                document.getElementById('anime-title').innerText = anime.title;
+                document.getElementById('anime-img').src = anime.img;
+                document.getElementById('anime-info').innerHTML = `
+                    <p><b>Тип:</b> ${anime.type}</p>
+                    <p><b>Жанры:</b> ${anime.genres}</p>
+                    <p><b>Тема:</b> ${anime.themes}</p>
+                    <p><b>Японское название:</b> ${anime.japTitle}</p>
+                    <p><b>Возрастной рейтинг:</b> ${anime.rating}</p>
+                    <p><b>Статус:</b> ${anime.status}</p>
+                `;
+            } else {
+                document.getElementById('anime-title').innerText = "Аниме не найдено";
+            }
+        }
 
-  // Запускаем отображение
-  displayAnimeData();
+        // --- 2. БАЗА ДАННЫХ (ВНИЗУ) ---
+        // Используем const, но она должна быть ОБЪЯВЛЕНА ДО запуска функции
+        const animeDatabase = [
+            {
+                id: "chainsaw_man",
+                title: "Chainsaw Man",
+                type: "TV",
+                genres: "Боевик",
+                themes: "Демоны",
+                japTitle: "Chainsaw Man",
+                rating: "18+",
+                status: "Вышло",
+                img: "chainsaw_man.jpg"
+            },
+            {
+                id: "overlord",
+                title: "Overlord",
+                type: "TV",
+                genres: "Фэнтези",
+                themes: "Исекай",
+                japTitle: "Overlord",
+                rating: "16+",
+                status: "Вышло",
+                img: "overlord.jpg"
+            }
+        ];
 
-  // --- 2. БАЗА ДАННЫХ (ТЕПЕРЬ ВСЕГДА ВНИЗУ) ---
-  // Можешь листать вниз и добавлять сотни аниме здесь
-  var animeDatabase = [
-    { 
-      id: "chainsaw_man", 
-      title: "Chainsaw Man", 
-      type: "TV",
-      genres: "Боевик",
-      themes: "Демоны",
-      japTitle: "Chainsaw Man",
-      rating: "18+",
-      status: "Вышло",
-      img: "chainsaw_man.jpg"
-    },
-    { 
-      id: "overlord", 
-      title: "Overlord",
-      type: "TV",
-      genres: "Боевик",
-      themes: "Демоны",
-      japTitle: "Chainsaw Man",
-      rating: "18+",
-      status: "Вышло",
-      img: "overlord.jpg"  
-    }
-  ];
-</script>
-
+        // --- 3. ЗАПУСК (ТЕПЕРЬ В САМОМ НИЗУ) ---
+        // В модулях запуск должен быть ПОСЛЕ того, как создана переменная animeDatabase
+        displayAnimeData();
+    </script>
 </body>
 </html>
-
 
