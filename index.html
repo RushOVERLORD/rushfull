@@ -380,18 +380,22 @@ document.addEventListener('click', function(e) {
 
     <!-- 1. ПУСТОЙ КОНТЕЙНЕР ДЛЯ КАРТОЧЕК -->
     <div class="anime-grid" id="anime-container"></div>
-<!-- ЭТО ПРОСТО ВЕРСТКА, ОНА НЕ ДОЛЖНА БЫТЬ В JS-ФУНКЦИИ -->
-<div id="user-profile" style="display: none; margin-top: 30px; padding: 20px; border-top: 2px solid var(--neon);">
-    <h2 style="color: var(--neon); text-shadow: 0 0 10px var(--neon);">Моя Энциклопедия</h2>
-    <div class="profile-tabs" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
-        <button class="tab-btn" onclick="displayLibrary('planned')">В планах</button>
-        <button class="tab-btn" onclick="displayLibrary('watching')">Смотрю</button>
-        <button class="tab-btn" onclick="displayLibrary('completed')">Просмотрено</button>
-        <button class="tab-btn" onclick="displayLibrary('dropped')">Брошено</button>
-        <button class="tab-btn" onclick="displayLibrary('on_hold')">Отложено</button>
+<!-- Этот блок "Профиль" -->
+<div id="user-profile" style="display: none; margin-top: 50px; padding: 20px; border-top: 3px solid var(--neon-color); background: #222; border-radius: 15px;">
+    <h2 style="color: var(--neon-color); text-shadow: var(--neon-glow); text-align: center;">ЛИЧНЫЙ КАБИНЕТ</h2>
+    
+    <!-- Кнопки-вкладки как на Shikimori -->
+    <div class="profile-tabs" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 25px;">
+        <button class="tab-btn" onclick="window.displayLibrary('planned')">В планах</button>
+        <button class="tab-btn" onclick="window.displayLibrary('watching')">Смотрю</button>
+        <button class="tab-btn" onclick="window.displayLibrary('completed')">Просмотрено</button>
+        <button class="tab-btn" onclick="window.displayLibrary('dropped')">Брошено</button>
+        <button class="tab-btn" onclick="window.displayLibrary('on_hold')">Отложено</button>
     </div>
-    <div id="profile-library-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px;">
-        <!-- Сюда JS будет добавлять аниме из твоих списков -->
+
+    <!-- Сетка именно для сохраненных аниме -->
+    <div id="profile-library-grid" class="anime-grid">
+        <!-- Сюда будут попадать карточки из твоих списков -->
     </div>
 </div>
 
@@ -452,7 +456,7 @@ document.addEventListener('click', function(e) {
     } catch (e) { alert("Ошибка: " + e.message); }
   };
 
-  // 4. СОХРАНЕНИЕ В СПИСКИ
+	<!--СОХРАНЕНИЕ В СПИСКИ-->
   window.updateAnimeStatus = async (animeId, status) => {
     const user = auth.currentUser;
     if (!user) return alert("Войдите в аккаунт!");
@@ -464,7 +468,7 @@ document.addEventListener('click', function(e) {
     } catch (e) { alert("Ошибка: " + e.message); }
   };
 
-  // 5. ОТОБРАЖЕНИЕ КАРТОЧЕК
+	<!--Отоброжение карточек-->
   function animeCardTemplate(anime) {
     return `
       <div class="anime-card">
@@ -489,7 +493,7 @@ document.addEventListener('click', function(e) {
     }
   }
 
-  // 6. ЗАГРУЗКА БИБЛИОТЕКИ В ПРОФИЛЕ
+	<!--ЗАГРУЗКА БИБЛИОТЕКИ В ПРОФИЛЕ-->
   window.displayLibrary = async (statusFilter) => {
     const user = auth.currentUser;
     const grid = document.getElementById('profile-library-grid');
@@ -514,7 +518,7 @@ document.addEventListener('click', function(e) {
     } catch (e) { console.error(e); }
   };
 
-  // 7. СОСТОЯНИЕ ВХОДА
+	<!--СОСТОЯНИЕ ВХОДА-->
   onAuthStateChanged(auth, (user) => {
     if (user) {
       document.getElementById('profile-btn').style.display = 'block';
