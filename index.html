@@ -396,36 +396,16 @@ document.addEventListener('click', function(e) {
 </div>
 
 <script type="module">
-import { 
-  getFirestore, 
-  doc, 
-  setDoc, 
-  getDoc, 
-  collection, 
-  getDocs, 
-  query, 
-  where 
-} from "https://gstatic.com";
-
-const db = getFirestore(app); // Инициализация базы
-  // 1. Импорты Firebase - ТУТ БЫЛА ОШИБКА (исправил analytics на auth)
+  // 1. ИМПОРТЫ (Исправлено: полные ссылки и правильный порядок)
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-  import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    onAuthStateChanged
-  } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js"; // ИСПРАВЛЕНО
-
-  // 2. ИМПОРТ ТВОЕЙ БАЗЫ
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
   import { animeDatabase } from './db.js';
 
-  // ... дальше твой конфиг и остальной код без изменений ...
-
-  // Твой конфиг Firebase
+  // 2. КОНФИГ И ИНИЦИАЛИЗАЦИЯ (Исправлено: app перед db)
   const firebaseConfig = {
     apiKey: "AIzaSyCf_jRAqo6l8ycv3YpHylDFdT03V9hgV8Q",
-    authDomain: "rushikaze-r2o5.firebaseapp.com",
+    authDomain: "://firebaseapp.com",
     projectId: "rushikaze-r2o5",
     storageBucket: "rushikaze-r2o5.firebasestorage.app",
     messagingSenderId: "674729217637",
@@ -435,33 +415,31 @@ const db = getFirestore(app); // Инициализация базы
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app);
 
-  // --- ЛОГИКА ПЕРЕКЛЮЧЕНИЯ И АВТОРИЗАЦИИ (Твоя текущая) ---
-    window.toggleAuthMode = () => {
+  // 3. ФУНКЦИИ АВТОРИЗАЦИИ (Исправлено: window. для видимости в HTML)
+  window.toggleAuthMode = () => {
     const btn = document.getElementById('main-auth-btn');
     const title = document.getElementById('form-title');
     const link = document.getElementById('toggle-link');
     const nameInput = document.getElementById('username');
     const avatarInput = document.getElementById('avatar-url');
 
-    // .trim() удаляет случайные пробелы по краям
     const currentText = btn.innerText.trim();
-
     if (currentText === "Создать аккаунт") {
-      title.innerText = "Вход"; 
+      title.innerText = "Вход";
       btn.innerText = "Войти";
       link.innerText = "Нет аккаунта? Регистрация";
-      if(nameInput) nameInput.style.display = "none"; 
+      if(nameInput) nameInput.style.display = "none";
       if(avatarInput) avatarInput.style.display = "none";
     } else {
-      title.innerText = "Регистрация"; 
+      title.innerText = "Регистрация";
       btn.innerText = "Создать аккаунт";
       link.innerText = "Уже есть аккаунт? Войти";
-      if(nameInput) nameInput.style.display = "block"; 
+      if(nameInput) nameInput.style.display = "block";
       if(avatarInput) avatarInput.style.display = "block";
     }
   };
-
 
   window.handleAuth = async () => {
     const email = document.getElementById('email').value;
@@ -474,96 +452,112 @@ const db = getFirestore(app); // Инициализация базы
     } catch (e) { alert("Ошибка: " + e.message); }
   };
 
-<!--Функция сохранения-->
+  // 4. СОХРАНЕНИЕ В СПИСКИ
   window.updateAnimeStatus = async (animeId, status) => {
     const user = auth.currentUser;
     if (!user) return alert("Войдите в аккаунт!");
     if (!status) return;
-
     try {
       const docRef = doc(db, "users", user.uid, "library", String(animeId));
-      await setDoc(docRef, {
-        status: status,
-        updatedAt: new Date()
-      }, { merge: true });
-      alert("Добавлено в список!");
-    } catch (e) {
-      alert("Ошибка: " + e.message);
-    }
+      await setDoc(docRef, { status: status, updatedAt: new Date() }, { merge: true });
+      alert("Обновлено!");
+    } catch (e) { alert("Ошибка: " + e.message); }
   };
 
- onAuthStateChanged(auth, (user) => {
-  if (user) {
-    document.getElementById('profile-btn').style.display = 'block';
-    document.getElementById('auth-form').style.display = 'none';
-    
-    // ДОБАВЬ ЭТУ СТРОКУ, чтобы профиль стал видимым:
-    document.getElementById('user-profile').style.display = 'block';
+  // 5. ОТОБРАЖЕНИЕ КАРТОЧЕК
+  function animeCardTemplate(anime) {
+    return `
+      <div class="anime-card">
+          <img src="${anime.img}" alt="${anime.title}">
+          <a href="${anime.link}">${anime.title}</a>
+          <select onchange="window.updateAnimeStatus('${anime.id}', this.value)" style="margin: 10px; background: #222; color: #eee; border: 1px solid var(--neon-color);">
+              <option value="">В список...</option>
+              <option value="planned">В планах</option>
+              <option value="watching">Смотрю</option>
+              <option value="completed">Просмотрено</option>
+              <option value="dropped">Брошено</option>
+              <option value="on_hold">Отложено</option>
+          </select>
+      </div>
+    `;
   }
-});
- 
-function animeCardTemplate(anime) {
-  return `
-    <div class="anime-card" style="border: 1px solid #333; padding: 10px; border-radius: 10px; text-align: center;">
-        <img src="${anime.img}" alt="${anime.title}" style="width: 100%; border-radius: 5px;">
-        <br>
-        <a href="${anime.link}" style="color: var(--neon); text-decoration: none; font-weight: bold;">${anime.title}</a>
-        <br>
-        <select onchange="window.updateAnimeStatus('${anime.id}', this.value)" style="margin-top: 10px; background: #222; color: #eee; border: 1px solid var(--neon);">
-            <option value="">В список...</option>
-            <option value="planned">В планах</option>
-            <option value="watching">Смотрю</option>
-            <option value="completed">Просмотрено</option>
-            <option value="dropped">Брошено</option>
-            <option value="on_hold">Отложено</option>
-        </select>
-    </div>
-  `;
-}
 
   function displayAnime() {
     const container = document.getElementById('anime-container');
     if (container) {
-      // Используем импортированную базу animeDatabase
       container.innerHTML = animeDatabase.map(anime => animeCardTemplate(anime)).join('');
     }
   }
 
-  // Запуск отрисовки и привязка кнопок
+  // 6. ЗАГРУЗКА БИБЛИОТЕКИ В ПРОФИЛЕ
+  window.displayLibrary = async (statusFilter) => {
+    const user = auth.currentUser;
+    const grid = document.getElementById('profile-library-grid');
+    if (!user || !grid) return;
+
+    grid.innerHTML = "<p>Загрузка...</p>";
+    try {
+        const q = query(collection(db, "users", user.uid, "library"), where("status", "==", statusFilter));
+        const snap = await getDocs(q);
+        let html = "";
+        snap.forEach(docSnap => {
+            const anime = animeDatabase.find(a => String(a.id) === String(docSnap.id));
+            if (anime) {
+                html += `
+                    <div style="text-align:center; background:#252525; padding:10px; border-radius:8px; border: 1px solid var(--neon-color);">
+                        <img src="${anime.img}" style="width:100%; height:150px; object-fit:cover; border-radius:5px;">
+                        <p style="font-size:12px; margin-top:5px;">${anime.title}</p>
+                    </div>`;
+            }
+        });
+        grid.innerHTML = html || "<p>Тут пока пусто</p>";
+    } catch (e) { console.error(e); }
+  };
+
+  // 7. СОСТОЯНИЕ ВХОДА
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      document.getElementById('profile-btn').style.display = 'block';
+      document.getElementById('auth-form').style.display = 'none';
+      document.getElementById('user-profile').style.display = 'block';
+      window.displayLibrary('watching'); // По умолчанию показываем "Смотрю"
+    }
+  });
+
   displayAnime();
-  
-  document.getElementById('toggle-link')?.addEventListener('click', window.toggleAuthMode);
-  document.getElementById('main-auth-btn')?.addEventListener('click', window.handleAuth);
 </script>
-<div id="google_translate_element" style="display:none;"></div>
+    <!-- 1. Скрытый элемент для работы Google Translate -->
+    <div id="google_translate_element" style="display:none;"></div>
 
-<script type="text/javascript">
-    function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-            pageLanguage: 'ru',
-            autoDisplay: false
-        }, 'google_translate_element');
-    }
-
-    function changeLanguage(lang) {
-        // Находим скрытый список Google
-        const googleSelect = document.querySelector('.goog-te-combo');
-        if (googleSelect) {
-            googleSelect.value = lang;
-            googleSelect.dispatchEvent(new Event('change')); // Имитируем выбор
-        } else {
-            // Если Google еще не загрузился, пробуем еще раз через полсекунды
-            setTimeout(() => changeLanguage(lang), 500);
+    <!-- 2. Скрипт настройки переводчика -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'ru',
+                autoDisplay: false
+            }, 'google_translate_element');
         }
-    }
 
-    // Слушаем твой переключатель
-    document.addEventListener('change', (e) => {
-        if (e.target && e.target.id === 'lang-switcher') {
-            changeLanguage(e.target.value);
+        function changeLanguage(lang) {
+            const googleSelect = document.querySelector('.goog-te-combo');
+            if (googleSelect) {
+                googleSelect.value = lang;
+                googleSelect.dispatchEvent(new Event('change'));
+            } else {
+                setTimeout(() => changeLanguage(lang), 500);
+            }
         }
-    });
-</script>
-<script type="text/javascript" src="https://google.com"></script>
+
+        document.addEventListener('change', (e) => {
+            if (e.target && e.target.id === 'lang-switcher') {
+                changeLanguage(e.target.value);
+            }
+        });
+    </script>
+
+    <!-- 3. ПРАВИЛЬНАЯ ссылка на скрипт Google Translate -->
+    <script src="https://google.com"></script>
+
 </body>
 </html>
+
