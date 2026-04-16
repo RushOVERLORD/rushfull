@@ -141,31 +141,44 @@
     </style>
 </head>
 <body>
+    <!-- Блок настроек в левом верхнем углу -->
+    <div style="position: absolute; top: 10px; left: 10px; z-index: 1000;">
+        <select id="lang-switcher" style="
+            background: #222; 
+            color: var(--neon-color, #00ff00); 
+            border: 1px solid var(--neon-color, #00ff00); 
+            border-radius: 5px;
+            padding: 5px;
+            cursor: pointer;
+            outline: none;
+            font-size: 14px;">
+            <option value="ru">RU</option>
+            <option value="en">EN</option>
+        </select>
+    </div>
 
-    <a href="profile.html" class="profile-link" id="profile-btn" style="display: none;">Мой профиль</a>
-    
-    <h1>Rushikadze</h1>
-    <p style="text-align: center; color: #888;">Добро пожаловать в международную энциклопедию аниме!</p>
+    <!-- Далее ваш основной код без изменений -->
+    <a href="profile.html" class="profile-link" id="profile-btn">
+        <h1 data-key="title">Rushikadze</h1>
+    </a>
+
+    <p style="text-align: center; color: #888;" data-key="welcome">Добро пожаловать в энциклопедию</p>
 
     <div class="auth-container" id="auth-form">
-    <h3 id="form-title" style="color: var(--neon-color);">Регистрация</h3>
-    
-    <!-- Поле ника скрываем при входе -->
-    <input type="text" id="username" placeholder="Ваше имя/Никнейм"> 
-    <input type="text" id="avatar-url" placeholder="Ссылка на фото (URL)"> 
-    
-    <input type="email" id="email" placeholder="Электронная почта">
-    <input type="password" id="pass" placeholder="Пароль">
-    <br>
-    
-    <button class="auth-btn" id="main-auth-btn" onclick="handleAuth()">Создать аккаунт</button>
-    
-    <p style="font-size: 12px; margin-top: 15px; cursor: pointer; text-decoration: underline;" 
-       onclick="toggleAuthMode()" id="toggle-link">
-       Уже есть аккаунт? Войти
-    </p>
-</div>
+        <h3 id="form-title" style="color: var(--neon-color);" data-key="reg_title">Регистрация</h3>
 
+        <input type="text" id="username" data-placeholder="nick" placeholder="Ваше имя/Никнейм">
+        <input type="text" id="avatar-url" data-placeholder="avatar" placeholder="Ссылка на фото профиля">
+        <input type="email" id="email" data-placeholder="email" placeholder="Электронная почта">
+        <input type="password" id="pass" data-placeholder="pass" placeholder="Пароль">
+        <br>
+
+        <button class="auth-btn" id="main-auth-btn" onclick="handleAuth()" data-key="auth_btn">Зарегистрироваться</button>
+
+        <p style="font-size: 12px; margin-top: 15px; cursor: pointer;" onclick="toggleAuthMode()" id="toggle-link" data-key="toggle_auth">
+           Уже есть аккаунт? Войти
+        </p>
+    </div>
 
     <!-- 1. ПУСТОЙ КОНТЕЙНЕР ДЛЯ КАРТОЧЕК -->
     <div class="anime-grid" id="anime-container"></div>
