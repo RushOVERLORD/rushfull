@@ -10,8 +10,29 @@
         .back-link { color: var(--neon); text-decoration: none; font-weight: bold; }
         .container { display: flex; gap: 30px; flex-wrap: wrap; margin-top: 20px; }
         .poster { width: 280px; border-radius: 10px; border: 2px solid var(--neon); box-shadow: 0 0 15px rgba(255,69,0,0.3); }
-        .info-list p { margin: 8px 0; border-bottom: 1px solid #333; padding-bottom: 5px; }
-        .info-list b { color: var(--neon); min-width: 150px; display: inline-block; }
+        .info-list p {
+    margin: 8px 0;
+    border-bottom: 1px solid #333;
+    padding-bottom: 5px;
+    
+    /* Добавь эти строки: */
+    display: flex;
+    align-items: flex-start; /* Выравнивание по верхней линии */
+}
+
+.info-list b {
+    color: var(--neon);
+    min-width: 160px; /* Фиксированная ширина для оранжевых слов */
+    flex-shrink: 0;   /* Запрещаем оранжевому слову сжиматься */
+    display: inline-block;
+}
+
+/* Добавь новый стиль для белого текста */
+.info-list span {
+    flex-grow: 1;    /* Занимает всё оставшееся место */
+    word-wrap: break-word;
+}
+
         h1 { text-shadow: 0 0 10px var(--neon); color: var(--neon); margin: 10px 0; }
     </style>
 </head>
@@ -48,13 +69,14 @@
 
                 // Вставляем все характеристики
                 document.getElementById('anime-info').innerHTML = `
-                    <p><b>Тип:</b> ${anime.type}</p>
-                    <p><b>Жанры:</b> ${anime.genres}</p>
-                    <p><b>Тема:</b> ${anime.themes}</p>
-                    <p><b>Японское название:</b> ${anime.japTitle}</p>
-                    <p><b>Возрастной рейтинг:</b> ${anime.rating}</p>
-                    <p><b>Статус:</b> ${anime.status}</p>
-                `;
+    <p><b>Тип:</b> <span>${anime.type}</span></p>
+    <p><b>Жанры:</b> <span>${anime.genres}</span></p>
+    <p><b>Тема:</b> <span>${anime.themes}</span></p>
+    <p><b>Японское название:</b> <span>${anime.japTitle}</span></p>
+    <p><b>Возрастной рейтинг:</b> <span>${anime.rating}</span></p>
+    <p><b>Статус:</b> <span>${anime.status}</span></p>
+`;
+
             } else {
                 // Если аниме с таким ID не найдено
                 document.getElementById('anime-title').innerText = "Аниме не найдено";
@@ -67,4 +89,3 @@
     </script>
 </body>
 </html>
-
