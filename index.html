@@ -356,9 +356,7 @@ document.addEventListener('click', function(e) {
     }
 });
 </script>
-
-   
-    <!-- Далее ваш основной код без изменений -->
+	<!--Окно регистрации-->
     <a href="profile.html" class="profile-link" id="profile-btn">
         <h1 data-key="title">Rushikadze</h1>
     </a>
@@ -382,9 +380,34 @@ document.addEventListener('click', function(e) {
 
     <!-- 1. ПУСТОЙ КОНТЕЙНЕР ДЛЯ КАРТОЧЕК -->
     <div class="anime-grid" id="anime-container"></div>
+<!-- ЭТО ПРОСТО ВЕРСТКА, ОНА НЕ ДОЛЖНА БЫТЬ В JS-ФУНКЦИИ -->
+<div id="user-profile" style="display: none; margin-top: 30px; padding: 20px; border-top: 2px solid var(--neon);">
+    <h2 style="color: var(--neon); text-shadow: 0 0 10px var(--neon);">Моя Энциклопедия</h2>
+    <div class="profile-tabs" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
+        <button class="tab-btn" onclick="displayLibrary('planned')">В планах</button>
+        <button class="tab-btn" onclick="displayLibrary('watching')">Смотрю</button>
+        <button class="tab-btn" onclick="displayLibrary('completed')">Просмотрено</button>
+        <button class="tab-btn" onclick="displayLibrary('dropped')">Брошено</button>
+        <button class="tab-btn" onclick="displayLibrary('on_hold')">Отложено</button>
+    </div>
+    <div id="profile-library-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px;">
+        <!-- Сюда JS будет добавлять аниме из твоих списков -->
+    </div>
+</div>
 
-<!-- Подключаем Firebase модули через CDN -->
 <script type="module">
+import { 
+  getFirestore, 
+  doc, 
+  setDoc, 
+  getDoc, 
+  collection, 
+  getDocs, 
+  query, 
+  where 
+} from "https://gstatic.com";
+
+const db = getFirestore(app); // Инициализация базы
   // 1. Импорты Firebase - ТУТ БЫЛА ОШИБКА (исправил analytics на auth)
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
   import {
@@ -451,23 +474,52 @@ document.addEventListener('click', function(e) {
     } catch (e) { alert("Ошибка: " + e.message); }
   };
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      document.getElementById('profile-btn').style.display = 'block';
-      document.getElementById('auth-form').style.display = 'none';
-    }
-  });
+<!--Функция сохранения-->
+  window.updateAnimeStatus = async (animeId, status) => {
+    const user = auth.currentUser;
+    if (!user) return alert("Войдите в аккаунт!");
+    if (!status) return;
 
-  // --- ОТРИСОВКА АНИМЕ (ОБНОВЛЕННЫЙ ШАБЛОН) ---
-  function animeCardTemplate(anime) {
-    // Мы берем ссылку прямо из объекта anime в db.js
-    return `
-        <div class="anime-card">
-            <img src="${anime.img}" alt="${anime.title}">
-            <a href="${anime.link}">${anime.title}</a>
-        </div>
-    `;
+    try {
+      const docRef = doc(db, "users", user.uid, "library", String(animeId));
+      await setDoc(docRef, {
+        status: status,
+        updatedAt: new Date()
+      }, { merge: true });
+      alert("Добавлено в список!");
+    } catch (e) {
+      alert("Ошибка: " + e.message);
+    }
+  };
+
+ onAuthStateChanged(auth, (user) => {
+  if (user) {
+    document.getElementById('profile-btn').style.display = 'block';
+    document.getElementById('auth-form').style.display = 'none';
+    
+    // ДОБАВЬ ЭТУ СТРОКУ, чтобы профиль стал видимым:
+    document.getElementById('user-profile').style.display = 'block';
   }
+});
+ 
+function animeCardTemplate(anime) {
+  return `
+    <div class="anime-card" style="border: 1px solid #333; padding: 10px; border-radius: 10px; text-align: center;">
+        <img src="${anime.img}" alt="${anime.title}" style="width: 100%; border-radius: 5px;">
+        <br>
+        <a href="${anime.link}" style="color: var(--neon); text-decoration: none; font-weight: bold;">${anime.title}</a>
+        <br>
+        <select onchange="window.updateAnimeStatus('${anime.id}', this.value)" style="margin-top: 10px; background: #222; color: #eee; border: 1px solid var(--neon);">
+            <option value="">В список...</option>
+            <option value="planned">В планах</option>
+            <option value="watching">Смотрю</option>
+            <option value="completed">Просмотрено</option>
+            <option value="dropped">Брошено</option>
+            <option value="on_hold">Отложено</option>
+        </select>
+    </div>
+  `;
+}
 
   function displayAnime() {
     const container = document.getElementById('anime-container');
