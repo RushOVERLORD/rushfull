@@ -308,31 +308,55 @@
     </div>
 
     <script>
-    // Логика меню: Открыть / Закрыть
-    function toggleSettings() {
-        const menu = document.getElementById('settings-menu');
-        menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+// 1. Открыть/Закрыть меню
+function toggleSettings() {
+    const menu = document.getElementById('settings-menu');
+    menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+}
+
+// 2. Функция ПЕРЕВОДА и СОХРАНЕНИЯ
+function changeLanguage(lang) {
+    const googleSelect = document.querySelector('.goog-te-combo');
+    if (googleSelect) {
+        googleSelect.value = lang;
+        googleSelect.dispatchEvent(new Event('change'));
+        localStorage.setItem('user_lang', lang); // Сохраняем выбор
+    } else {
+        // Если Google еще не загружен, ждем и пробуем снова
+        setTimeout(() => changeLanguage(lang), 500);
     }
+}
 
-    // Закрытие при клике в любое другое место
-    document.addEventListener('click', function(event) {
-        const menu = document.getElementById('settings-menu');
-        const btn = document.querySelector('.settings-btn');
-        if (!btn.contains(event.target) && !menu.contains(event.target)) {
-            menu.style.display = 'none';
-        }
-    });
+// 3. Следим за выбором в списке
+document.getElementById('lang-switcher').addEventListener('change', function() {
+    changeLanguage(this.value);
+});
 
-    // Связка с Google Translate
-    document.getElementById('lang-switcher').addEventListener('change', function() {
-        const lang = this.value;
-        const googleSelect = document.querySelector('.goog-te-combo');
-        if (googleSelect) {
-            googleSelect.value = lang;
-            googleSelect.dispatchEvent(new Event('change'));
+// 4. ПРОВЕРКА ПРИ ЗАГРУЗКЕ САЙТА
+window.addEventListener('load', () => {
+    const savedLang = localStorage.getItem('user_lang');
+    const browserLang = navigator.language.slice(0, 2);
+    const finalLang = savedLang || browserLang;
+
+    // Даем Google время загрузиться, затем ставим язык
+    setTimeout(() => {
+        if (finalLang !== 'ru') {
+            changeLanguage(finalLang);
+            document.getElementById('lang-switcher').value = finalLang;
         }
-    });
-    </script>
+    }, 1500);
+});
+
+// Закрытие меню при клике мимо
+document.addEventListener('click', function(e) {
+    const menu = document.getElementById('settings-menu');
+    const btn = document.querySelector('.settings-btn');
+    if (menu && btn && !btn.contains(e.target) && !menu.contains(e.target)) {
+        menu.style.display = 'none';
+    }
+});
+</script>
+
    
     <!-- Далее ваш основной код без изменений -->
     <a href="profile.html" class="profile-link" id="profile-btn">
