@@ -145,22 +145,64 @@
     .goog-te-banner-frame.skiptranslate { display: none !important; }
     body { top: 0 !important; }
     .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
+
+.lang-container {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 5px 12px;
+    border-radius: 50px;
+    border: 2px solid #ff4500; /* Оранжевый неон */
+    box-shadow: 0 0 10px rgba(255, 69, 0, 0.7); /* Свечение */
+}
+
+.globe-icon {
+    font-size: 16px;
+    margin-right: 8px;
+    filter: drop-shadow(0 0 2px #ff4500);
+}
+
+.custom-select {
+    background: transparent;
+    color: #fff;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+    padding-right: 5px;
+}
+
+/* Чтобы выпадающий список внутри был темным */
+.custom-select option, .custom-select optgroup {
+    background: #1a1a1a;
+    color: #fff;
+}
+
     </style>
 </head>
 <body>
     <!-- Кнопка выбора языка: Сортировка по материкам -->
-    <div style="position: fixed; top: 15px; left: 15px; z-index: 9999; display: flex; align-items: center; gap: 5px;">
-        <span style="font-size: 18px;">🌐</span>
-        <select id="lang-switcher" style="
-            background: rgba(0, 0, 0, 0.9); 
-            color: #fff; 
-            border: 1px solid var(--neon-color, #00ff00); 
-            border-radius: 4px;
-            padding: 4px 8px;
-            font-size: 13px;
-            cursor: pointer;
-            outline: none;
-            max-width: 160px;">
+    <!-- Исправленная кнопка выбора языка -->
+<div style="position: fixed; top: 10px; left: 10px; z-index: 9999; display: flex; align-items: center; background: rgba(0, 0, 0, 0.7); padding: 5px 10px; border-radius: 20px; border: 1px solid #ff4500; box-shadow: 0 0 10px rgba(255, 69, 0, 0.5);">
+    <span style="font-size: 16px; margin-right: 5px; line-height: 1;">🌐</span>
+    <select id="lang-switcher" style="
+        background: transparent; 
+        color: #fff; 
+        border: none; 
+        font-size: 13px;
+        cursor: pointer;
+        outline: none;
+        appearance: none; /* Убирает стандартную стрелку браузера */
+        -webkit-appearance: none;
+        padding-right: 5px;
+    ">
+        <option value="ru" style="background: #222;">Русский</option>
+        <option value="en" style="background: #222;">English</option>
             
             <option value="ru">Русский (Оригинал)</option>
 
@@ -217,22 +259,6 @@
                 <option value="af">Afrikaans (ЮАР)</option>
                 <option value="am">አማርኛ (Эфиопия)</option>
             </optgroup>
-        </select>
-    </div>
-
-    <!-- Блок настроек в левом верхнем углу -->
-    <div style="position: absolute; top: 10px; left: 10px; z-index: 1000;">
-        <select id="lang-switcher" style="
-            background: #222; 
-            color: var(--neon-color, #00ff00); 
-            border: 1px solid var(--neon-color, #00ff00); 
-            border-radius: 5px;
-            padding: 5px;
-            cursor: pointer;
-            outline: none;
-            font-size: 14px;">
-            <option value="ru">RU</option>
-            <option value="en">EN</option>
         </select>
     </div>
 
