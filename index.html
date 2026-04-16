@@ -173,13 +173,13 @@
 <!-- Подключаем Firebase модули через CDN -->
 <script type="module">
   // 1. Импорты Firebase (твои текущие)
-  import { initializeApp } from "https://gstatic.com";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
   import {
     getAuth,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     onAuthStateChanged
-  } from "https://gstatic.com";
+  } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-analytics.js";
 
   // 2. ИМПОРТ ТВОЕЙ БАЗЫ (ВМЕСТО СТАРОГО МАССИВА)
   import { animeDatabase } from './db.js';
@@ -187,7 +187,7 @@
   // Твой конфиг Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyCf_jRAqo6l8ycv3YpHylDFdT03V9hgV8Q",
-    authDomain: "://firebaseapp.com",
+    authDomain: "rushikaze-r2o5.firebaseapp.com",
     projectId: "rushikaze-r2o5",
     storageBucket: "rushikaze-r2o5.firebasestorage.app",
     messagingSenderId: "674729217637",
@@ -259,7 +259,6 @@
   
   document.getElementById('toggle-link')?.addEventListener('click', window.toggleAuthMode);
   document.getElementById('main-auth-btn')?.addEventListener('click', window.handleAuth);
-
 </script>
 </body>
 </html>
