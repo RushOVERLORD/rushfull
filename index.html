@@ -224,84 +224,62 @@
 <body>
     
     <div style="position: fixed; top: 15px; left: 15px; z-index: 10000;">
-        
-        <button class="settings-btn" onclick="toggleSettings()" style="
-            background: rgba(0, 0, 0, 0.8); 
-            border: 2px solid #ff4500; 
-            color: white; 
-            font-size: 20px; 
-            padding: 8px; 
-            border-radius: 50%; 
-            cursor: pointer; 
-            box-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            outline: none;
-        ">⚙️</button>
-        
-       
-        <div id="settings-menu" style="
+    <button class="settings-btn" onclick="toggleSettings()" style="
+        background: rgba(0, 0, 0, 0.8);
+        border: 2px solid #ff4500;
+        color: white;
+        font-size: 20px;
+        padding: 8px;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        outline: none;
+    ">⚙️</button>
+
+    <div id="settings-menu" style="
+        display: none;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        background: #1a1a1a;
+        border: 2px solid #ff4500;
+        padding: 15px;
+        border-radius: 10px;
+        min-width: 200px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+    ">
+        <a href="profile.html" id="profile-btn" style="
             display: none; 
-            position: absolute; 
-            top: 50px; 
-            left: 0; 
-            background: #1a1a1a; 
-            border: 2px solid #ff4500; 
-            padding: 15px; 
-            border-radius: 10px; 
-            min-width: 200px; 
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            color: white; 
+            text-decoration: none; 
+            font-weight: bold; 
+            font-family: sans-serif;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        ">👤 Мой профиль</a>
+
+        <p style="margin: 10px 0 10px 0; font-size: 12px; color: #ff4500; font-family: sans-serif; font-weight: bold;">ВЫБОР ЯЗЫКА:</p>
+        <select id="lang-switcher" style="
+            width: 100%;
+            background: #222;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 8px;
+            border-radius: 5px;
+            outline: none;
+            cursor: pointer;
         ">
-            <p style="margin: 0 0 10px 0; font-size: 12px; color: #ff4500; font-family: sans-serif; font-weight: bold;">ВЫБОР ЯЗЫКА:</p>
-            <select id="lang-switcher" style="
-                width: 100%; 
-                background: #222; 
-                color: #fff; 
-                border: 1px solid #444; 
-                padding: 8px; 
-                border-radius: 5px; 
-                outline: none;
-                cursor: pointer;
-            ">
-                <option value="ru">Русский (Оригинал)</option>
-
-                <optgroup label="Европа">
-                    <option value="en">English (UK)</option>
-                    <option value="de">Deutsch</option>
-                    <option value="fr">Français</option>
-                    <option value="it">Italiano</option>
-                    <option value="es">Español</option>
-                    <option value="pl">Polski</option>
-                    <option value="uk">Українська</option>
-                    <option value="be">Беларуская</option>
-                    <option value="sr">Српски</option>
-                    <option value="sv">Svenska</option>
-                </optgroup>
-
-                <optgroup label="Азия">
-                    <option value="zh-CN">中文 (Китай)</option>
-                    <option value="ja">日本語 (Япония)</option>
-                    <option value="ko">한국어 (Корея)</option>
-                    <option value="kk">Қазақша</option>
-                    <option value="uz">O'zbekcha</option>
-                    <option value="ky">Кыргызча</option>
-                    <option value="hy">Հայերեն</option>
-                    <option value="ka">ქართული</option>
-                    <option value="tr">Türkçe</option>
-                    <option value="ar">العربية</option>
-                </optgroup>
-
-                <optgroup label="Америка и Океания">
-                    <option value="en">English (USA)</option>
-                    <option value="pt">Português (Brasil)</option>
-                    <option value="es">Español (Latinoam.)</option>
-                </optgroup>
-            </select>
-        </div>
+            <option value="ru">Русский (Оригинал)</option>
+            <option value="en">English</option>
+        </select>
     </div>
+</div>
 
     <script>
 // 1. Открыть/Закрыть меню
