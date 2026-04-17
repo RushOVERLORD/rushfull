@@ -440,16 +440,23 @@ document.addEventListener('click', function(e) {
     }
   }
 
-	    onAuthStateChanged(auth, (user) => {
+	      onAuthStateChanged(auth, (user) => {
     const authForm = document.getElementById('auth-form');
     const profileBtn = document.getElementById('profile-btn');
 
     if (user) {
+      console.log("Юзер в системе:", user.email);
       if (authForm) authForm.style.display = 'none';
       if (profileBtn) profileBtn.style.display = 'block';
     } else {
-      if (authForm) authForm.style.setProperty('display', 'block', 'important');
+      console.log("Юзер вышел - принудительно открываю форму входа");
+      // Прячем кнопку профиля в настройках
       if (profileBtn) profileBtn.style.display = 'none';
+      
+      // Показываем форму регистрации/входа на главной
+      if (authForm) {
+        authForm.style.setProperty('display', 'block', 'important');
+      }
     }
   });
 
