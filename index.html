@@ -253,16 +253,6 @@
         min-width: 200px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
     ">
-        <a href="profile.html" id="profile-btn" style="
-            display: none; 
-            color: white; 
-            text-decoration: none; 
-            font-weight: bold; 
-            font-family: sans-serif;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
-        ">👤 Мой профиль</a>
 
         <p style="margin: 10px 0 10px 0; font-size: 12px; color: #ff4500; font-family: sans-serif; font-weight: bold;">ВЫБОР ЯЗЫКА:</p>
         <select id="lang-switcher" style="
@@ -336,93 +326,12 @@ document.addEventListener('click', function(e) {
         Добро пожаловать в международную энциклопедию по Аниме/Манге/Ранобэ.
     </p>
 
-    <div class="auth-container" id="auth-form" style="display: none;">
-        <h3 id="form-title" style="color: var(--neon-color);" data-key="reg_title">Регистрация</h3>
-
-        <input type="text" id="username" data-placeholder="nick" placeholder="Ваше имя/Никнейм">
-        <input type="text" id="avatar-url" data-placeholder="avatar" placeholder="Ссылка на фото профиля">
-        <input type="email" id="email" data-placeholder="email" placeholder="Электронная почта">
-        <input type="password" id="pass" data-placeholder="pass" placeholder="Пароль">
-        <br>
-
-        <button class="auth-btn" id="main-auth-btn" onclick="handleAuth()" data-key="auth_btn">Зарегистрироваться</button>
-
-        <p style="font-size: 12px; margin-top: 15px; cursor: pointer;" onclick="toggleAuthMode()" id="toggle-link" data-key="toggle_auth">
-           Уже есть аккаунт? Войти
-        </p>
-    </div>
-
     <div class="anime-grid" id="anime-container"></div>
 
 <script type="module">
-  // 1. ИМПОРТЫ (Исправлено: полные ссылки и правильный порядок)
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
-  import { getFirestore, doc, setDoc, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
-  import { animeDatabase } from './db.js';
+    import { animeDatabase } from './db.js';
 
-  // 2. КОНФИГ И ИНИЦИАЛИЗАЦИЯ (Исправлено: app перед db)
-  const firebaseConfig = {
-    apiKey: "AIzaSyCf_jRAqo6l8ycv3YpHylDFdT03V9hgV8Q",
-    authDomain: "://firebaseapp.com",
-    projectId: "rushikaze-r2o5",
-    storageBucket: "rushikaze-r2o5.firebasestorage.app",
-    messagingSenderId: "674729217637",
-    appId: "1:674729217637:web:246e3fd3250b800df3008c",
-    measurementId: "G-4P2GJ8M1YG"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-
-  // 3. ФУНКЦИИ АВТОРИЗАЦИИ (Исправлено: window. для видимости в HTML)
-  window.toggleAuthMode = () => {
-    const btn = document.getElementById('main-auth-btn');
-    const title = document.getElementById('form-title');
-    const link = document.getElementById('toggle-link');
-    const nameInput = document.getElementById('username');
-    const avatarInput = document.getElementById('avatar-url');
-
-    const currentText = btn.innerText.trim();
-    if (currentText === "Создать аккаунт") {
-      title.innerText = "Вход";
-      btn.innerText = "Войти";
-      link.innerText = "Нет аккаунта? Регистрация";
-      if(nameInput) nameInput.style.display = "none";
-      if(avatarInput) avatarInput.style.display = "none";
-    } else {
-      title.innerText = "Регистрация";
-      btn.innerText = "Создать аккаунт";
-      link.innerText = "Уже есть аккаунт? Войти";
-      if(nameInput) nameInput.style.display = "block";
-      if(avatarInput) avatarInput.style.display = "block";
-    }
-  };
-
-  window.handleAuth = async () => {
-    const email = document.getElementById('email').value;
-    const pass = document.getElementById('pass').value;
-    const isLoginMode = document.getElementById('main-auth-btn').innerText === "Войти";
-    if (!email || !pass) return alert("Введите почту и пароль!");
-    try {
-      if (isLoginMode) { await signInWithEmailAndPassword(auth, email, pass); alert("С возвращением!"); }
-      else { await createUserWithEmailAndPassword(auth, email, pass); alert("Аккаунт создан!"); }
-    } catch (e) { alert("Ошибка: " + e.message); }
-  };
-
-	
-  window.updateAnimeStatus = async (animeId, status) => {
-    const user = auth.currentUser;
-    if (!user) return alert("Войдите в аккаунт!");
-    if (!status) return;
-    try {
-      const docRef = doc(db, "users", user.uid, "library", String(animeId));
-      await setDoc(docRef, { status: status, updatedAt: new Date() }, { merge: true });
-      alert("Обновлено!");
-    } catch (e) { alert("Ошибка: " + e.message); }
-  };
-
+  // 1. Шаблон карточки аниме (только фото и ссылка)
   function animeCardTemplate(anime) {
     return `
       <div class="anime-card">
@@ -432,7 +341,7 @@ document.addEventListener('click', function(e) {
     `;
   }
 
-
+  // 2. Функция для вывода всех аниме из db.js
   function displayAnime() {
     const container = document.getElementById('anime-container');
     if (container) {
@@ -440,28 +349,8 @@ document.addEventListener('click', function(e) {
     }
   }
 
-	      onAuthStateChanged(auth, (user) => {
-    const authForm = document.getElementById('auth-form');
-    const profileBtn = document.getElementById('profile-btn');
-
-    if (user) {
-      console.log("Юзер в системе:", user.email);
-      if (authForm) authForm.style.display = 'none';
-      if (profileBtn) profileBtn.style.display = 'block';
-    } else {
-      console.log("Юзер вышел - принудительно открываю форму входа");
-      // Прячем кнопку профиля в настройках
-      if (profileBtn) profileBtn.style.display = 'none';
-      
-      // Показываем форму регистрации/входа на главной
-      if (authForm) {
-        authForm.style.setProperty('display', 'block', 'important');
-      }
-    }
-  });
-
+  // Запускаем отрисовку
   displayAnime();
-
 </script>
   
     <div id="google_translate_element" style="display:none;"></div>
