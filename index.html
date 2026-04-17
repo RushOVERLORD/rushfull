@@ -467,23 +467,15 @@ document.addEventListener('click', function(e) {
     } catch (e) { alert("Ошибка: " + e.message); }
   };
 
-	
   function animeCardTemplate(anime) {
     return `
       <div class="anime-card">
           <img src="${anime.img}" alt="${anime.title}">
           <a href="${anime.link}">${anime.title}</a>
-          <select onchange="window.updateAnimeStatus('${anime.id}', this.value)" style="margin: 10px; background: #222; color: #eee; border: 1px solid var(--neon-color);">
-              <option value="">В список...</option>
-              <option value="planned">В планах</option>
-              <option value="watching">Смотрю</option>
-              <option value="completed">Просмотрено</option>
-              <option value="dropped">Брошено</option>
-              <option value="on_hold">Отложено</option>
-          </select>
       </div>
     `;
   }
+
 
   function displayAnime() {
     const container = document.getElementById('anime-container');
