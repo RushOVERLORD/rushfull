@@ -353,11 +353,17 @@ document.addEventListener('click', function(e) {
 });
 </script>
     <a href="profile.html" class="profile-link" id="profile-btn">
-        <h1 data-key="title">Rushikadze</h1>
+    <h1 data-key="title" style="text-align: center;">Rushikadze</h1>
+
+    <a href="profile.html" class="profile-link" id="profile-btn" style="display: none;">
+        Личный кабинет
     </a>
 
-    <p style="text-align: center; color: #888;" data-key="welcome">Добро пожаловать в международную энциклопедию по Аниме/Манге/Ранобэ</p>
-    <div class="auth-container" id="auth-form">
+    <p style="text-align: center; color: #888; margin-top: 10px;" data-key="welcome">
+        Добро пожаловать в международную энциклопедию по Аниме/Манге/Ранобэ.
+    </p>
+
+    <div class="auth-container" id="auth-form" style="display: none;">
         <h3 id="form-title" style="color: var(--neon-color);" data-key="reg_title">Регистрация</h3>
 
         <input type="text" id="username" data-placeholder="nick" placeholder="Ваше имя/Никнейм">
@@ -373,7 +379,6 @@ document.addEventListener('click', function(e) {
         </p>
     </div>
 
- 
     <div class="anime-grid" id="anime-container"></div>
 
 <script type="module">
@@ -462,23 +467,21 @@ document.addEventListener('click', function(e) {
     }
   }
 
-	  onAuthStateChanged(auth, (user) => {
+	    onAuthStateChanged(auth, (user) => {
     const authForm = document.getElementById('auth-form');
     const profileBtn = document.getElementById('profile-btn');
 
     if (user) {
-      // ПОЛЬЗОВАТЕЛЬ ВОШЕЛ
-      if (profileBtn) profileBtn.style.display = 'block';
       if (authForm) authForm.style.display = 'none';
+      if (profileBtn) profileBtn.style.display = 'block';
     } else {
-      // ПОЛЬЗОВАТЕЛЬ ВЫШЕЛ (ГОСТЬ)
-      if (authForm) authForm.style.display = 'block'; // Показываем форму входа!
-      if (profileBtn) profileBtn.style.display = 'none';   // Прячем кнопку профиля
+      if (authForm) authForm.style.setProperty('display', 'block', 'important');
+      if (profileBtn) profileBtn.style.display = 'none';
     }
   });
 
-
   displayAnime();
+
 </script>
   
     <div id="google_translate_element" style="display:none;"></div>
