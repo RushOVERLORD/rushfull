@@ -36,7 +36,7 @@
             display: table;
             margin: 20px auto;
             padding-bottom: 10px;
-            color: var(--neon-color)
+            color: var(--neon-color);
             letter-spacing: 3px;
             border-bottom: 4px solid var(--neon-color);
             text-shadow: var(--neon-glow);
@@ -54,7 +54,6 @@
 }
 
 
-        /* МЕНЯЕШЬ ТУТ — МЕНЯЕТСЯ ВО ВСЕХ КАРТОЧКАХ */
         .anime-card {
             background-color: #252525;
             border-radius: 8px;
@@ -81,13 +80,12 @@
             text-decoration: none;
             font-weight: bold;
             font-size: 14px;
-	/*перемешает длинные названия в следующую строку*/
+
 	white-space: normal;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
         }
 
-        /* Стили кнопок и форм */
         .profile-link, .auth-btn {
             background-color: #252525;
             color: var(--neon-color);
@@ -103,6 +101,7 @@
         .profile-link { position: absolute; top: 20px; right: 20px; }
 
         .auth-container {
+	    display: none;
             background-color: #252525;
             max-width: 300px;
             margin: 20px auto;
@@ -138,10 +137,8 @@
     }
 }
 
-    /* Твои старые стили (цвета, шрифты и т.д.) */
     .auth-btn { background: var(--neon-color); }
 
-    /* Вставляй сюда в конец */
     .goog-te-banner-frame.skiptranslate { display: none !important; }
     body { top: 0 !important; }
     .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
@@ -177,7 +174,6 @@
     padding-right: 5px;
 }
 
-/* Чтобы выпадающий список внутри был темным */
 .custom-select option, .custom-select optgroup {
     background: #1a1a1a;
     color: #fff;
