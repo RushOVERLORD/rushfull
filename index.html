@@ -462,15 +462,21 @@ document.addEventListener('click', function(e) {
     }
   }
 
-  onAuthStateChanged(auth, (user) => {
+	  onAuthStateChanged(auth, (user) => {
+    const authForm = document.getElementById('auth-form');
+    const profileBtn = document.getElementById('profile-btn');
+
     if (user) {
-      document.getElementById('profile-btn').style.display = 'block';
-      document.getElementById('auth-form').style.display = 'none';
+      // ПОЛЬЗОВАТЕЛЬ ВОШЕЛ
+      if (profileBtn) profileBtn.style.display = 'block';
+      if (authForm) authForm.style.display = 'none';
     } else {
-      document.getElementById('auth-form').style.display = 'block';
-      document.getElementById('profile-btn').style.display = 'none';
+      // ПОЛЬЗОВАТЕЛЬ ВЫШЕЛ (ГОСТЬ)
+      if (authForm) authForm.style.display = 'block'; // Показываем форму входа!
+      if (profileBtn) profileBtn.style.display = 'none';   // Прячем кнопку профиля
     }
   });
+
 
   displayAnime();
 </script>
